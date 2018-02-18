@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="" />
+
+<link rel="shortcut icon" href="https://t1.picb.cc/uploads/2017/12/17/BnwnK.jpg">
+
+
+<title> 关于Nginx</title>
+
+
+<link rel="stylesheet" href="/css/bulma.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+
+<body>
+
+  <style media="screen">
+hr {
+  height: 1px;
+    background-color: black;
+    margin-top: 0px;
+    border: none;
+    margin-bottom: 0px;
+}
+.black {
+
+
+background-color: hsl(0,0%,7%);;
+
+
+}
+ #shadow {
+  text-shadow: 2px 3px 3px white;
+  margin-top: 3px;
+}
+h1 {
+  text-shadow: 2px 3px 3px black;
+ }
+.menu {
+margin-top: -80px;
+
+
+
+
+}
+#nav {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+  #banner {
+    position: relative;
+
+  }
+</style>
+<header>
+
+  <section class="section black is-medium" id="banner">
+    <div class="container">
+      <h1 id="sitetitle" class="title is-3 has-text-white-bis has-text-centered is-capitalized has-text-weight-bold">
+        
+        Hexo
+      </h1>
+
+      <h2 id="shadow" class="subtitle is-4 has-text-white is-capitalized has-text-centered">
+
+      </h2>
+
+    </div>
+
+    </div>
+  </section>
+<!--TOP Menu-->
+  <div class="menu level" >
+<div class="level-item has-text-centered"></div>
+    <nav class=".navbar level-item" >
+      
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            /
+            "> Home</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            mailto:admin@varctrl.me
+            "> Email</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            https://github.com/varctrl/
+            "> Project</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            /archives
+            "> Archive</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            /about
+            "> About</a>
+        
+    </nav>
+    <div class="level-item has-text-centered"></div>
+</div>
+
+  <hr>
+
+
+
+
+
+
+</header>
+
+
+
+<link rel="stylesheet" href="/css/highlight.css">
+<style>
+    .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 45px;
+    }
+
+    @media (max-width: 767px) {
+        .markdown-body {
+            padding: 15px;
+        }
+    }
+    #postsec {
+        clear: left;
+    }
+
+
+
+    .details {
+        float: left;
+        padding-left: 10px;
+        font-size: 18px;
+
+    }
+    div > span {
+       margin-left: 0px;
+      margin-top: 0px;
+    }
+</style>
+<section id="post_section" class="container markdown-body" >
+
+    <!--title,date,tags-->
+    <h2 id="hidden">
+        关于Nginx
+    </h2>
+
+    <section class="desec">
+
+        
+    </section>
+
+
+    <!-- content -->
+    <section id="postsec"><h3 id="1-什么是Nginx"><a href="#1-什么是Nginx" class="headerlink" title="1.什么是Nginx"></a>1.什么是Nginx</h3><p>明确Nginx是一个高性能的web和反向代理服务器，好处体现有：</p>
+<p>1)作为web服务器，与Apache相比，更具轻量级，占用更少的内存和资源，而且支持更多的并发连接，因为nginx处理请求是异步非阻塞的，而apache是阻塞型的；</p>
+<p>2)作为负载均衡服务器，nginx既可以在内部支持Rails和PHP，也可以支持作为http代理服务器对外进行服务;</p>
+<p>3)作为邮件代理服务器，一个非常优秀的邮件代理服务器；</p>
+<p>4)安装简单，配置文件简洁，bug少</p>
+<a id="more"></a>
+<h3 id="2-什么是反向代理服务器"><a href="#2-什么是反向代理服务器" class="headerlink" title="2.什么是反向代理服务器"></a>2.什么是反向代理服务器</h3><blockquote>
+<p>反向代理方式是指以代理服务器来接受网络上的用户请求，然后将用户请求转发给原始服务器，从原始服务器上获取结果后返回给用户端。简单说反向代理服务器的作用就是代替原始服务器让客户端访问。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180113/2bIHIE2aCg.png?imageslim" alt="mark"></p>
+<p>所以反向代理服务器的作用一大作用就是保护和隐藏了原始服务器，除此之外反向代理服务器可以负载均衡，具体如下：</p>
+<blockquote>
+<p>当反向代理服务器不止一个的时候，可以把它们当做一个集群，当更多的用户访问资源服务器的时候，让不同的代理服务器Z（x）去应答不同的用户，然后发送不同用户需要的资源。而且反向代理服务器像正向代理服务器一样拥有<code>CACHE</code>的作用，它可以缓存原始资源服务器B的资源，而不是每次都要向原始资源服务器B请求数据，特别是一些静态的数据，比如图片和文件。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180113/50EhfJi9CK.png?imageslim" alt="mark"></p>
+<h3 id="3-nginx为什么是一个高性能的web"><a href="#3-nginx为什么是一个高性能的web" class="headerlink" title="3.nginx为什么是一个高性能的web"></a>3.nginx为什么是一个高性能的web</h3><blockquote>
+<p>可以提高网站的性能，原因就是对于后端是动态服务来说，如java和php，这类服务器的IO处理能力不强，而nginx好处就是在于会把request请求读取完整之前先buffer住(buffer即缓冲区，作用就是开启一个缓冲区，先在这个缓冲区中进行数据存储，再把数据发送出去，好处就是可以把数据一次性地发给目标，相当于与即时传输可以节约这部分带宽)，这样交给后端的就是一个完整的http请求，从而提高后端的效率，而不是断断续续的传递(互联网上连接速度一般比较慢)，同样nginx也可以把response给buffer住，同样也是减轻后端的压力。</p>
+</blockquote>
+<h3 id="4-Nginx与多进程模式Apache对于高并发处理上的区别"><a href="#4-Nginx与多进程模式Apache对于高并发处理上的区别" class="headerlink" title="4.Nginx与多进程模式Apache对于高并发处理上的区别"></a>4.Nginx与多进程模式Apache对于高并发处理上的区别</h3><blockquote>
+<p>对于apache，每一个请求都会独占一个工作线程，当并发数到达几千时，就同时有几千的线程在处理请求，这对于操作系统来说，占用的内存非常大，线程的上下文切换带来的cpu开销也很大，性能就难以上去，同时这些开销是完全没有意义的。 对于Nginx来讲，一个进程只有一个主线程，通过<code>异步非阻塞的事件</code>(使用epoll和大量细节处的优化)处理机制，实现了循环处理多个准备好的事件，从而实现轻量级和高并发。具体为：</p>
+<blockquote>
+<p>没进来一个request请求，都有一个worker进程去处理，但不是全程的处理，会处理到可能发生阻塞的地方，比如向后端服务器转发request并等待请求返回时。这个时候worker进程在发送完请求后不会一直处于等待过程中，稍作休息，它会注册一个事件，目的就是当upstream返回结果了就继续进行工作。此时如果再有request进来，worker就会再按这种方式去处理。而一旦后端服务器返回结果了就会触发事件，worker才会来接手，这个request才会接着往下走。由于web server的工作性质决定了每个request的大部分生命都是在网络传输中，实际上花费在server机器上的时间片不多，所以这也导致几个进程就解决高并发的原因所在。</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>nginx是以多线程的方式来工作的;</li>
+<li>nginx在启动后会有一个主线程master和多个相互独立的worker进程。</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180118/E081Jf9gL2.png?imageslim" alt="mark"></p>
+<ul>
+<li>master进程</li>
+</ul>
+<blockquote>
+<p>主要用来管理worker进程，master进程充当整个进程组与用户的交互接口，它不需要处理网络事件，不负责业务的执行，只会通过管理worker进程来实现重启服务、平滑升级、更换日志文件、配置文件实时生效等功能。</p>
+<ul>
+<li>接收来自外界的信号，向各worker进程发送信号</li>
+<li>监控worker进程的运行状态，当worker进程异常情况退出后，会自动重新启动新的worker进程</li>
+</ul>
+</blockquote>
+<ul>
+<li>worker进程</li>
+</ul>
+<blockquote>
+<p>基本的网络事件，则是放在worker进程中来处理了。多个worker进程之间是对等的，他们同等竞争来自客户端的请求，各进程互相之间是独立的。<code>一个完整的请求只可能在一个worker进程中处理，一个worker进程，不可能处理其它进程的请求</code>。worker进程的个数是可以设置的，一般我们会<code>设置与机器cpu核数一致</code>，原因就是如果有更多的worker数，就会导致进程相互竞争cpu资源。</p>
+</blockquote>
+<h3 id="5-nginx负载均衡的5种策略"><a href="#5-nginx负载均衡的5种策略" class="headerlink" title="5.nginx负载均衡的5种策略"></a>5.nginx负载均衡的5种策略</h3><blockquote>
+<p>nginx可以根据客户端ip进行负载均衡，通过在upstream(被反向代理的server)里设置ip_hash，就可以针对同一个C类地址段中的客户端选择同一个后端服务器，除非那个后端服务器宕了才会换一个。</p>
+</blockquote>
+<p>nginx的upstream目前支持的5种方式的分配</p>
+<p>1)轮询(默认)</p>
+<p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。<br>upstream backserver {<br>server 192.168.0.14;<br>server 192.168.0.15;<br>} </p>
+<p>2)指定权重(加权)</p>
+<p>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。<br>upstream backserver {<br>server 192.168.0.14 weight=10;<br>server 192.168.0.15 weight=10;<br>} </p>
+<p>3)ip绑定ip_hash(即同一ip被分配到固定的后端服务器)</p>
+<p>每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。<br>upstream backserver {<br>ip_hash;<br>server 192.168.0.14:88;<br>server 192.168.0.15:80;<br>} </p>
+<p>4)fair(第三方)</p>
+<p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。<br>upstream backserver {<br>server server1;<br>server server2;<br>fair;<br>} </p>
+<p>5)url_hash(第三方)</p>
+<p>按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。<br>upstream backserver {<br>server squid1:3128;<br>server squid2:3128;<br>hash $request_uri;<br>hash_method crc32;<br>}<br>在需要使用负载均衡的server中增加<br>proxy_pass <a href="http://backserver/" target="_blank" rel="noopener">http://backserver/</a>;<br>upstream backserver{<br>ip_hash;<br>server 127.0.0.1:9090 down; (down 表示单前的server暂时不参与负载) </p>
+<p>server 127.0.0.1:8080 weight=2; (weight 默认为1.weight越大，负载的权重就越大) </p>
+<p>server 127.0.0.1:6060; </p>
+<p>server 127.0.0.1:7070 backup; (其它所有的非backup机器down或者忙的时候，请求backup机器)<br>} </p>
+<p>max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误 </p>
+<p>fail_timeout:max_fails次失败后，暂停的时间</p>
+
+    </section>
+
+
+</section>
+<script>var title = document.getElementById("hidden");
+    title.style.display = "none";
+    sitetitle = document.getElementById("sitetitle");
+    titlev = title.childNodes[0].nodeValue;
+    sitetitle.innerHTML = titlev;
+    shadow = document.getElementById("shadow");
+    shadow.style.visibility = "hidden";
+</script>
+<!-- 评论系统-->
+
+
+
+
+
+<style>
+    #height {
+        height: 100px;
+        box-sizing: border-box;
+        color: rgb(51, 51, 51);
+        font-size: 18px;
+        font-weight: 400;
+
+    }
+
+    .footer_p {
+        box-sizing: border-box;
+        font-size: 18px;
+        font-weight: 200;
+        line-height: 27px;
+        text-align: center;
+        text-rendering: optimizelegibility;
+    }
+
+    .footer_link {
+        color: black;
+    }
+</style>
+<footer class="footer" id="height">
+
+    <div class="container">
+        <div class="content has-text-centered ">
+            <p class="footer_p">
+                Theme By<a href="https://github.com/varctrl/" class="footer_link
+"> varCTRL.</a>
+                Inspired By<a href="https://github.com/levblanc/hexo-theme-aero-dual" class="footer_link
+"> Aero Dual.</a>
+            </p>
+        </div>
+        <div class="content has-text-centered">
+            <p class="footer_p">Powered By <a href="https://hexo.io/" class="footer_link
+"> Hexo.</a></p>
+        </div>
+    </div>
+
+</footer>
+
+<script src="/js/jquery.js"></script>
+
+<!-- 特效 -->
+<script type="text/javascript" color="#555" opacity='0.9' zIndex="-1" count="100"
+src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+
+</script>
+<script src="/js/highlight.pack.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+        codeBlocks.forEach(function(block, index) {
+            hljs.highlightBlock(block);
+        });
+    });
+</script>
+
+</body>

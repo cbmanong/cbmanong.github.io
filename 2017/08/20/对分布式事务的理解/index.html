@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="" />
+
+<link rel="shortcut icon" href="https://t1.picb.cc/uploads/2017/12/17/BnwnK.jpg">
+
+
+<title> 对分布式事务的理解</title>
+
+
+<link rel="stylesheet" href="/css/bulma.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+
+<body>
+
+  <style media="screen">
+hr {
+  height: 1px;
+    background-color: black;
+    margin-top: 0px;
+    border: none;
+    margin-bottom: 0px;
+}
+.black {
+
+
+background-color: hsl(0,0%,7%);;
+
+
+}
+ #shadow {
+  text-shadow: 2px 3px 3px white;
+  margin-top: 3px;
+}
+h1 {
+  text-shadow: 2px 3px 3px black;
+ }
+.menu {
+margin-top: -80px;
+
+
+
+
+}
+#nav {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+  #banner {
+    position: relative;
+
+  }
+</style>
+<header>
+
+  <section class="section black is-medium" id="banner">
+    <div class="container">
+      <h1 id="sitetitle" class="title is-3 has-text-white-bis has-text-centered is-capitalized has-text-weight-bold">
+        
+        Hexo
+      </h1>
+
+      <h2 id="shadow" class="subtitle is-4 has-text-white is-capitalized has-text-centered">
+
+      </h2>
+
+    </div>
+
+    </div>
+  </section>
+<!--TOP Menu-->
+  <div class="menu level" >
+<div class="level-item has-text-centered"></div>
+    <nav class=".navbar level-item" >
+      
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            /
+            "> Home</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            mailto:admin@varctrl.me
+            "> Email</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            https://github.com/varctrl/
+            "> Project</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            /archives
+            "> Archive</a>
+        
+        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+
+
+            /about
+            "> About</a>
+        
+    </nav>
+    <div class="level-item has-text-centered"></div>
+</div>
+
+  <hr>
+
+
+
+
+
+
+</header>
+
+
+
+<link rel="stylesheet" href="/css/highlight.css">
+<style>
+    .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 45px;
+    }
+
+    @media (max-width: 767px) {
+        .markdown-body {
+            padding: 15px;
+        }
+    }
+    #postsec {
+        clear: left;
+    }
+
+
+
+    .details {
+        float: left;
+        padding-left: 10px;
+        font-size: 18px;
+
+    }
+    div > span {
+       margin-left: 0px;
+      margin-top: 0px;
+    }
+</style>
+<section id="post_section" class="container markdown-body" >
+
+    <!--title,date,tags-->
+    <h2 id="hidden">
+        对分布式事务的理解
+    </h2>
+
+    <section class="desec">
+
+        
+    </section>
+
+
+    <!-- content -->
+    <section id="postsec"><h3 id="1-什么是分布式事务？"><a href="#1-什么是分布式事务？" class="headerlink" title="1.什么是分布式事务？"></a>1.什么是分布式事务？</h3><blockquote>
+<p>事务指的是逻辑上的一组操作，组成这组操作的各个单元要么全部成功，要么全部失败。</p>
+<p>事务必须满足传统事务的特性，即原子性、一致性、隔离性和持久性。</p>
+<p>分布式事务就是指<code>事务的参与者、支持事务的服务器、资源服务器一级事务管理器分别位于不同的分布式系统的不同节点之上</code>。简单说就是一次大的操作由不同小的操作组成，这些小的操作<code>分布在不同服务器上</code>，且属于不同的应用，分布式事务需要保证这些小操作要么全部成功，要么全部失败。本质上来说，分布式事务就是为了保证不同数据库的数据一致性。<a id="more"></a></p>
+</blockquote>
+<h3 id="2-分布式事务的应用场景"><a href="#2-分布式事务的应用场景" class="headerlink" title="2.分布式事务的应用场景"></a>2.分布式事务的应用场景</h3><blockquote>
+<p>案例1：用户下单除了在订单表插入一条记录外，对应商品表的这个商品数量3必须减去1，如何实现？</p>
+<p>案例2：搜索广告系统中，当用户点击某广告后，除了在点击事件表中增强一条记录外，还得去商家账户表中找到这个商家扣除广告费吧，如何保证？</p>
+</blockquote>
+<h3 id="3-分布式事务的产生原因"><a href="#3-分布式事务的产生原因" class="headerlink" title="3.分布式事务的产生原因"></a>3.分布式事务的产生原因</h3><h4 id="3-1-数据库分库分表"><a href="#3-1-数据库分库分表" class="headerlink" title="3.1 数据库分库分表"></a>3.1 数据库分库分表</h4><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180118/L31c760291.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>对于数据库单表而言，如果一年产生的数据超过1000W，就要考虑分库分表，简单说就是将原来的一个数据库变成多个数据库，这时候，如果一个操作既访问数据库01，又要访问数据库03，要保证数据的一致性就要用到分布式事务。</p>
+</blockquote>
+<h4 id="3-2应用SOA化"><a href="#3-2应用SOA化" class="headerlink" title="3.2应用SOA化"></a>3.2应用SOA化</h4><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180118/FEcH373flm.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>所谓的SOA化，就是业务的服务化。在我们的这个电商项目中，将整个网站进行了拆解，分离出了订单中心、用户中心、库存中心。对于订单中心，有专门的数据库存储订单信息，用户中心也有专门的数据库存储用户信息，库存中心也会有专门的数据库存储库存信息。这时候如果要同时对订单和库存进行操作，那么就会涉及到订单数据库和库存数据库，为了保证数据一致性，就需要用到分布式事务。</p>
+</blockquote>
+<p>对于上述两种现象本质相同都是因为要操作的数据库变多了。</p>
+<h3 id="4-事务的ACID特性"><a href="#4-事务的ACID特性" class="headerlink" title="4. 事务的ACID特性"></a>4. 事务的ACID特性</h3><p>1)原子性(A)</p>
+<blockquote>
+<p>简单说就是整个事务中的所有操作要么全部成功，要么全部失败。对于事务在执行中发生的错误，所有的操作都会被回滚。</p>
+</blockquote>
+<p>2)一致性(C)</p>
+<blockquote>
+<p>事务的执行必须保证系统的一致性，如表B的字段是从表A获取，表A的字段改变了，表B的相应字段也需要改变，这就叫一致性。</p>
+</blockquote>
+<p>3)隔离性(I)</p>
+<blockquote>
+<p>事务与事务之间不会互相影响</p>
+</blockquote>
+<p>4)持久性(D)</p>
+<blockquote>
+<p>一旦<code>事务提交成功</code>，事务中的所有数据操作都必须被持久化保存到数据库中，即使提交事务后，数据库崩溃，在数据库启动时，也必须能保证通过某种机制恢复数据。</p>
+</blockquote>
+<h3 id="5-常见的分布式事务解决方案"><a href="#5-常见的分布式事务解决方案" class="headerlink" title="5.常见的分布式事务解决方案"></a>5.常见的分布式事务解决方案</h3><h4 id="5-1-基于XA协议的两阶段提交"><a href="#5-1-基于XA协议的两阶段提交" class="headerlink" title="5.1 基于XA协议的两阶段提交"></a>5.1 基于XA协议的两阶段提交</h4><ul>
+<li>什么是XA？</li>
+</ul>
+<blockquote>
+<p>XA是一个分布式事务协议，主要定义了(全局)事务管理器和(局部)资源管理器之间的接口，它是双向的系统接口，在事务管理器以及一个或多个资源管理器之间形成通信桥梁，其中资源管理器往往由数据库实现，比如Oracle、DB2这些商业数据库都实现了XA接口。而<code>事务管理器控制着全局事务，管理事务生命周期，并协调资源。资源管理器负责控制和管理实际资源（如数据库或 JMS队列）</code>。</p>
+</blockquote>
+<ul>
+<li>两阶段提交协议？</li>
+</ul>
+<blockquote>
+<p>分布式事务必须满足传统事务的特性，即原子性，一致性，分离性和持久性。但是分布式事务处理过程中，某些场地(Server)可能发生故障，或者由于网络发生故障而无法访问到某些场地。为了<code>防止分布式系统部分失败时产生数据的不一致性</code>。在分布式事务的控制中采用了两阶段提交协议（Two- Phase Commit Protocol）。即事务的提交分为两个阶段：</p>
+<p>1)预提交阶段</p>
+<p>2)决策后阶段</p>
+</blockquote>
+<p>1)两阶段提交用来<code>协调参与一个更新中的多个服务器上的活动</code>，以防止分布式系统部分失败时产生数据的不一致性，例如，如果一个更新操作要求位于三个不同结点上的记录被改变，且其中只要有一个结点失败，另外两个结点必须检测到这个失败并取消它们所做的改变。</p>
+<p>2)为了支持两阶段提交，一个分布式更新事务中涉及到的服务器必须能够相互通信，一般来说一个服务器会被指定为<em>“提交”或“控制”服务器</em>并监控来自其他服务器的信息；</p>
+<p>3)在分布式更新期间，各<code>服务器首先标志</code>它们<code>已经完成（但未提交）</code>指定给它们的分布式事务的那一部分，<code>并准备提交</code>（以使它们的更新部分成为永久性的）。这是 两阶段提交的<em>第一阶段</em>。如果有一结点不能响应，那么控制服务器要指示其它结点撤消分布式事务的各个部分的影响。如果<code>所有结点</code>都回答<code>准备好提</code>交，<code>控制服务器</code> 则指示它们提交并等待它们的响应。等待确认信息阶段是<em>第二阶段</em>。</p>
+<p>4)在接收到可以提交指示后，每个服务器提交分布式事务中属于自己的那一部分，并给控制服务器 发回提交完成信息。</p>
+<blockquote>
+<p>在一个分布式事务中，必须有一个场地的Server作为协调者(coordinator)，它能向 其它场地的Server发出请求，并对它们的回答作出响应，由它来控制一个分布式事务的提交或撤消。该分布式事务中涉及到的其它场地的Server称为参 与者（Participant）。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180118/mDFII3Df8j.png?imageslim" alt="mark"></p>
+<p>事务两阶段提交的过程如下：<br>　　● 两阶段提交在应用程序<code>向协调者发出一个提交命令时被启动</code>。这时提交进入第一阶段，即预提交阶段。在这一阶段中：<br>(1) 协调者准备局部（即在本地）提交并在日志中写入”预提交”日志项，并包含有该事务的所有参与者的名字。<br>(2) 协调者询问参与者能否提交该事务。一个参与者可能由于多种原因不能提交。例如，该Server提供的约束条件（Constraints）的延迟检查不符合 限制条件时，不能提交；参与者本身的Server进程或硬件发生故障，不能提交；或者协调者访问不到某参与者（网络故障），这时协调者都认为是收到了一个 否定的回答。<br>(3) 如果参与者能够提交，则在其本身的日志中写入”准备提交”日志项，该日志项立即写入硬盘，然后给协调者发回，已准备好提交”的回答。<br>(4) 协调者等待所有参与者的回答，如果有参与者发回否定的回答，则协调者撤消该事务并给所有参与者发出一个”撤消该事务”的消息，结束该分布式事务，撤消该事务的所有影响。</p>
+<p>　 　● 如果所有的参与者都送回”已准备好提交”的消息，则该事务的提交进入第二阶段，即决策后提交阶段。在这一阶段中：</p>
+<p>　　(1) 协调者在日志中写入”提交”日志项，并立即写入硬盘。<br>　　(2) 协调者向参与者发出”提交该事务”的命令。各参与者接到该命令后，在各自的日志中写入”提交”日志项，并立即写入硬盘。然后送回”已提交”的消息，释放该事务占用的资源。<br>　　(3) 当所有的参与者都送回”已提交”的消息后，协调者在日志中写入”事务提交完成”日志项，释放协调者占用的资源 。这样，完成了该分布式事务的提交。</p>
+<pre><code>现如今实现基于两阶段提交的分布式事务也没那么困难了，如果使用java，那么可以使用开源软件atomikos来快速实现。
+</code></pre><p>缺点：</p>
+<p>　　1）两阶段提交涉及多次节点间的网络通信，通信时间太长！</p>
+<p>　　2）事务时间相对于变长了，锁定的资源的时间也变长了，造成资源等待时间也增加好多。</p>
+<p>综上，使用基于XA协议的两阶段协议方法性能实在是太差，根本不适合高并发的系统。</p>
+<h4 id="5-2-使用消息队列来避免分布式事务，即采用消息中间件-MQ"><a href="#5-2-使用消息队列来避免分布式事务，即采用消息中间件-MQ" class="headerlink" title="5.2 使用消息队列来避免分布式事务，即采用消息中间件(MQ)"></a><code>5.2 使用消息队列来避免分布式事务，即采用消息中间件(MQ)</code></h4><blockquote>
+<p>什么是消息队列？<br>打比方说，在实际生活转账服务中，当用户A账户扣除1万后，我们只要生成一个凭证（消息）即可，这个<code>凭证（消息）</code>上写着“让用户B账户增加 1万”，只要这个凭证（消息）能可靠保存，我们最终是可以拿着这个凭证（消息）让用户B账户增加1万的，即我们能依靠这个凭证（消息）完成最终一致性。</p>
+</blockquote>
+<h3 id="消息的可靠性"><a href="#消息的可靠性" class="headerlink" title="消息的可靠性"></a>消息的可靠性</h3><blockquote>
+<p>当采用消息中间件时，消息的可靠性体现在两个方面：</p>
+<ul>
+<li>消息的发送者端：发送者端完成操作后一定能将消息成功发送到消息系统</li>
+<li>消息的接收者端：消费者端仅且能够从消息系统成功消费一次消息。</li>
+</ul>
+</blockquote>
+<h4 id="如何可靠保存凭证-消息"><a href="#如何可靠保存凭证-消息" class="headerlink" title="如何可靠保存凭证(消息)"></a>如何可靠保存凭证(消息)</h4><p>1)业务与消息耦合的方式</p>
+<blockquote>
+<p>如用户A在完成扣款的同时记录消息数据，这个消息数据与业务数据保存在同一数据库实例中，可以确保消息一定能保存下来，我们通过实时消息服务将此消息通知用户B，用户B处理成功后发送回复成功消息，用户A收到回复后删除该条消息数据。</p>
+</blockquote>
+<p>2)业务与消息解耦的方式</p>
+<ul>
+<li>用户A在扣款事务提交之前，向实时消息服务请求发送消息，实时消息服务只记录消息数据，而不真正发送，只有消息发送成功后才会提交事务；</li>
+<li>当用户A扣款事务被提交成功后，向实时消息服务确认发送。只有在得到确认发送指令后，实时消息服务才真正发送该消息；</li>
+<li>当用户A扣款事务提交失败回滚后，向实时消息服务取消发送。在得到取消发送指令后，该消息将不会被发送；</li>
+<li>对于那些未确认的消息或者取消的消息，需要有一个消息状态确认系统定时去用户A系统查询这个消息的状态并进行更新。为什么需要这一步骤，举个例子：假设在第2步用户A扣款事务被成功提交后，系统挂了，此时消息状态并未被更新为“确认发送”，从而导致消息不能被发送。</li>
+</ul>
+<p>优点：消息数据独立存储，降低业务系统与消息系统间的耦合</p>
+<p>缺点：一次消息发送需要两次请求，业务处理服务需要实现消息状态回查接口</p>
+<h4 id="可能出现消息重复投递的问题"><a href="#可能出现消息重复投递的问题" class="headerlink" title="可能出现消息重复投递的问题"></a>可能出现消息重复投递的问题</h4><blockquote>
+<p>为什么相同的消息会被重复投递？比如用户B处理完消息msg后，发送了处理成功的消息给用户A，正常情况下用户A应该要删除消息msg，但如果用户A这时候悲剧的挂了，重启后一看消息msg还在，就会继续发送消息msg。</p>
+</blockquote>
+<ul>
+<li><h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h4></li>
+</ul>
+<blockquote>
+<p>在用户B这边增加消息应用状态表（message_apply），通俗来说就是个账本，用于记录消息的消费情况，每次来一个消息，在真正执行之前，先去消息应用状态表中查询一遍，如果找到说明是重复消息，丢弃即可，如果没找到才执行，同时插入到消息应用状态表（同一事务）。</p>
+</blockquote>
+
+    </section>
+
+
+</section>
+<script>var title = document.getElementById("hidden");
+    title.style.display = "none";
+    sitetitle = document.getElementById("sitetitle");
+    titlev = title.childNodes[0].nodeValue;
+    sitetitle.innerHTML = titlev;
+    shadow = document.getElementById("shadow");
+    shadow.style.visibility = "hidden";
+</script>
+<!-- 评论系统-->
+
+
+
+
+
+<style>
+    #height {
+        height: 100px;
+        box-sizing: border-box;
+        color: rgb(51, 51, 51);
+        font-size: 18px;
+        font-weight: 400;
+
+    }
+
+    .footer_p {
+        box-sizing: border-box;
+        font-size: 18px;
+        font-weight: 200;
+        line-height: 27px;
+        text-align: center;
+        text-rendering: optimizelegibility;
+    }
+
+    .footer_link {
+        color: black;
+    }
+</style>
+<footer class="footer" id="height">
+
+    <div class="container">
+        <div class="content has-text-centered ">
+            <p class="footer_p">
+                Theme By<a href="https://github.com/varctrl/" class="footer_link
+"> varCTRL.</a>
+                Inspired By<a href="https://github.com/levblanc/hexo-theme-aero-dual" class="footer_link
+"> Aero Dual.</a>
+            </p>
+        </div>
+        <div class="content has-text-centered">
+            <p class="footer_p">Powered By <a href="https://hexo.io/" class="footer_link
+"> Hexo.</a></p>
+        </div>
+    </div>
+
+</footer>
+
+<script src="/js/jquery.js"></script>
+
+<!-- 特效 -->
+<script type="text/javascript" color="#555" opacity='0.9' zIndex="-1" count="100"
+src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+
+</script>
+<script src="/js/highlight.pack.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+        codeBlocks.forEach(function(block, index) {
+            hljs.highlightBlock(block);
+        });
+    });
+</script>
+
+</body>

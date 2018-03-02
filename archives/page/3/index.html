@@ -290,18 +290,19 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2017/08/20/对分布式事务的理解/" >
+            <a class="abstract-title" href = "/2017/08/20/关于Nginx/" >
                 
-                    <span>对分布式事务的理解</span>
+                    <span>关于Nginx</span>
             </a>
             <div class="abstract-content">
-                1.什么是分布式事务？
-事务指的是逻辑上的一组操作，组成这组操作的各个单元要么全部成功，要么全部失败。
-事务必须满足传统事务的特性，即原子性、一致性、隔离性和持久性。
-分布式事务就是指事务的参与者、支持事务的服务器、资源服务器一级事务管理器分别位于不同的分布式系统的不同节点之上。简单说就是一次大的操作由不同小的操作组成，这些小的操作分布在不同服务器上，且属于不同的应用，分布式事务需要保证这些小操作要么全部成功，要么全部失败。本质上来说，分布式事务就是为了保证不同数据库的数据一致性。
+                1.什么是Nginx明确Nginx是一个高性能的web和反向代理服务器，好处体现有：
+1)作为web服务器，与Apache相比，更具轻量级，占用更少的内存和资源，而且支持更多的并发连接，因为nginx处理请求是异步非阻塞的，而apache是阻塞型的；
+2)作为负载均衡服务器，nginx既可以在内部支持Rails和PHP，也可以支持作为http代理服务器对外进行服务;
+3)作为邮件代理服务器，一个非常优秀的邮件代理服务器；
+4)安装简单，配置文件简洁，bug少
 
-2.分布式事务的应用场景
-案例1：用户下单除了在订单表插入一条记录外，对应商品表的这个商品数量3必须减去...
+2.什么是反向代理服务器
+反向代理方式是指以代理服务器来接受网络上的用户请求，然后将用户请求转发给原始服务器，从原始服务器上获取...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -316,19 +317,18 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2017/08/20/关于Nginx/" >
+            <a class="abstract-title" href = "/2017/08/20/对分布式事务的理解/" >
                 
-                    <span>关于Nginx</span>
+                    <span>对分布式事务的理解</span>
             </a>
             <div class="abstract-content">
-                1.什么是Nginx明确Nginx是一个高性能的web和反向代理服务器，好处体现有：
-1)作为web服务器，与Apache相比，更具轻量级，占用更少的内存和资源，而且支持更多的并发连接，因为nginx处理请求是异步非阻塞的，而apache是阻塞型的；
-2)作为负载均衡服务器，nginx既可以在内部支持Rails和PHP，也可以支持作为http代理服务器对外进行服务;
-3)作为邮件代理服务器，一个非常优秀的邮件代理服务器；
-4)安装简单，配置文件简洁，bug少
+                1.什么是分布式事务？
+事务指的是逻辑上的一组操作，组成这组操作的各个单元要么全部成功，要么全部失败。
+事务必须满足传统事务的特性，即原子性、一致性、隔离性和持久性。
+分布式事务就是指事务的参与者、支持事务的服务器、资源服务器一级事务管理器分别位于不同的分布式系统的不同节点之上。简单说就是一次大的操作由不同小的操作组成，这些小的操作分布在不同服务器上，且属于不同的应用，分布式事务需要保证这些小操作要么全部成功，要么全部失败。本质上来说，分布式事务就是为了保证不同数据库的数据一致性。
 
-2.什么是反向代理服务器
-反向代理方式是指以代理服务器来接受网络上的用户请求，然后将用户请求转发给原始服务器，从原始服务器上获取...
+2.分布式事务的应用场景
+案例1：用户下单除了在订单表插入一条记录外，对应商品表的这个商品数量3必须减去...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -560,6 +560,8 @@
     
     
     
+    
+    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -606,12 +608,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
         </li>
     
     

@@ -347,18 +347,19 @@
 <p>2)JMS限定了必须使用Java语言；AMQP只是协议，不规定实现方式，因此是跨语言的。</p>
 <p>3)JMS规定了两种消息模型，即点对点以及广播；而AMQP的消息模型更加丰富。</p>
 <h3 id="6-常见的MQ产品"><a href="#6-常见的MQ产品" class="headerlink" title="6.常见的MQ产品"></a>6.常见的MQ产品</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/45GHgimILl.png?imageslim" alt="mark"></p>
-<h3 id="6-1-关于RabbitMQ"><a href="#6-1-关于RabbitMQ" class="headerlink" title="6.1 关于RabbitMQ"></a>6.1 关于<a href="http://www.rabbitmq.com" target="_blank" rel="noopener">RabbitMQ</a></h3><blockquote>
+<h3 id="7-关于RabbitMQ"><a href="#7-关于RabbitMQ" class="headerlink" title="7. 关于RabbitMQ"></a>7. 关于<a href="http://www.rabbitmq.com" target="_blank" rel="noopener">RabbitMQ</a></h3><blockquote>
 <ul>
-<li>RabbitMQ是基于Erlang语言开发的，它是一种通用的面向并发的编程语言</li>
-<li>RabbitMQ是一个典型的生产者、消费者模型，生产者不断产生新的消息，放入RabbitMQ的消息队列中，消费者从队列中获取消息。</li>
+<li>RabbitMQ是基于<em>Erlang语言</em>开发的，它是一种通用的面向并发的编程语言；</li>
+<li><em>RabbitMQ是一个典型的生产者、消费者模型，生产者不断产生新的消息，放入RabbitMQ的消息队列中，消费者从队列中获取消息；</em></li>
 </ul>
 <ul>
-<li>rabbitmq是一个开源的，在amqp基础上完整的，可复用的企业消息系统；</li>
+<li>RabbitMQ是一个开源的，在amqp基础上完整的，可复用的企业消息系统；</li>
 <li>支持主流的操作系统，Linux、Windows、MacOX等；</li>
 <li>多种开发语言支持，java、Python、Ruby、.NET、PHP、C/C++、node.js等</li>
 </ul>
 </blockquote>
-
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/kC8geKjk3g.png?imageslim" alt="mark"></p>
+<h3 id="7-1-RabbitMQ消息队列模型"><a href="#7-1-RabbitMQ消息队列模型" class="headerlink" title="7.1 RabbitMQ消息队列模型"></a>7.1 RabbitMQ消息队列模型</h3>
     </article>
     <!-- 前后页  -->
     <ul class="post-paginator">
@@ -464,7 +465,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MQ"><span class="toc-number">1.</span> <span class="toc-text">1.MQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-什么是MQ？"><span class="toc-number">2.</span> <span class="toc-text">2.什么是MQ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-什么是JMS？"><span class="toc-number">3.</span> <span class="toc-text">3.什么是JMS？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-什么是AMQP"><span class="toc-number">4.</span> <span class="toc-text">4.什么是AMQP?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-JMS和AMQP的区别"><span class="toc-number">5.</span> <span class="toc-text">5.JMS和AMQP的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-常见的MQ产品"><span class="toc-number">6.</span> <span class="toc-text">6.常见的MQ产品</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-关于RabbitMQ"><span class="toc-number">7.</span> <span class="toc-text">6.1 关于RabbitMQ</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MQ"><span class="toc-number">1.</span> <span class="toc-text">1.MQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-什么是MQ？"><span class="toc-number">2.</span> <span class="toc-text">2.什么是MQ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-什么是JMS？"><span class="toc-number">3.</span> <span class="toc-text">3.什么是JMS？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-什么是AMQP"><span class="toc-number">4.</span> <span class="toc-text">4.什么是AMQP?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-JMS和AMQP的区别"><span class="toc-number">5.</span> <span class="toc-text">5.JMS和AMQP的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-常见的MQ产品"><span class="toc-number">6.</span> <span class="toc-text">6.常见的MQ产品</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-关于RabbitMQ"><span class="toc-number">7.</span> <span class="toc-text">7. 关于RabbitMQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-RabbitMQ消息队列模型"><span class="toc-number">8.</span> <span class="toc-text">7.1 RabbitMQ消息队列模型</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -477,12 +478,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
-    
-    
     
     
     
@@ -634,12 +629,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
         </li>
     
     

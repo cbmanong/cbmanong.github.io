@@ -1,12 +1,637 @@
-extends views/main.pug
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        对Redis的初了解 · _initial
+        
+    </title>
+    <link rel="icon" href= /avatar/favicon.png>
+    <!-- 提前加载place holder  -->
+    <style>
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+        @font-face {
+            font-family: 'Source Sans Pro';
+            src: url('/font/Source Sans Pro.woff'),
+            url('/font/Source Sans Pro.woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0px;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2s ease-in-out 0s 15;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        99% {
+            transform: translate3d(0, 0, 0);
+        }
+        99.1% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(-226px, 0, 0);
+        }
+    }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?c2e692c5407f95609121a9d80bd24510";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<header class="header">
 
-block head
-  title
-    = page.title + ' - ' + config.title
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+        <div class="toggle-banner">
+            <div class="blog-title">
+                <a href="/" >_initial</a>
+            </div>
+            <div class="post-banner">
+                <span class="post-name">对Redis的初了解</span>
+            </div>
+        </div>
+    </div>
+    
+    <a class="home-link" href=/>_initial</a>
+</header>
+    
+    
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+    
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            对Redis的初了解
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+        </p>
+        <!-- 404 -->
+        
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/12/03</span>
+            </div>
+            <!-- 
 
-block main
-  include mixins/post.pug
-  +post(page, 'post')
-  
-  include plugins/reward.pug
-  include plugins/livere.pug
+<div class="post-share iconfont-archer">
+    <ul class="share-box" data-href = "/2017/12/03/对Redis的初了解/" data-title = "对Redis的初了解" >
+        <li class="to-weibo">分享到微博</li>
+        <li class="to-wechat">分享到微信</li>
+        <li class="to-qq">分享到QQ</li>
+        <li class="to-twitter">分享到twitter</li>
+    </ul>
+</div> -->
+        
+    </div>
+</div>
+        <div class="container">
+            <main class="main post-page">
+    <div class="qr-mask"></div>
+<div class="QRcode-box">
+    <p>扫描二维码分享</p>
+    <div class="QRcode-close">×</div>
+</div>
+    <article class="article-entry">
+        <h3 id="1-目前主流的缓存技术主要分为两类："><a href="#1-目前主流的缓存技术主要分为两类：" class="headerlink" title="1.目前主流的缓存技术主要分为两类："></a>1.目前主流的缓存技术主要分为两类：</h3><p>Redis和Memcached</p>
+<p>区别在于：<a id="more"></a><br>1)从性能上看：</p>
+<ul>
+<li>redis：单线程，因此在大数据量的情况下，略逊色于Memcached</li>
+<li>memcached：多线程，性能强劲，但是在数据量不大时，优势不明显</li>
+</ul>
+<p>2)从存储方式上看：</p>
+<ul>
+<li>redis：支持数据持久化和主从备份，数据更安全，可以搭建集群，内存的读写速度远超于硬盘</li>
+</ul>
+<ul>
+<li>memcached：数据存于内存中，没有持久化功能</li>
+</ul>
+<p>3)从数据结构上看：</p>
+<ul>
+<li>redis：除了基本的k-v结构外，支持更多复杂结构</li>
+</ul>
+<blockquote>
+<p>字符串类型(String)，Redis中最基础的K-V结构。其键和值都是字符串。类似Java的Map&lt; String,String&gt;</p>
+<blockquote>
+<p><strong>使用场景：</strong>常规key-value缓存应用。常规计数: 微博数, 粉丝数。</p>
+</blockquote>
+<p>散列类型(hash)，类似于Java中的Map&lt; String,Map&lt; String,Stgring&gt;&gt;，键是字符串，值是另一个映射。因此hash结构适合用来存储对象，键相当于对象名称，而字段类似对象中的属性名、值就类似对象中的属性值</p>
+<blockquote>
+<p><strong>使用场景：</strong>存储部分变更数据，如用户信息等。</p>
+</blockquote>
+<p>列表类型(list)</p>
+<ul>
+<li>可以存储一个有序的字符串列表，常用的操作是向列表两端添加元素或者获取列表的某一个片段，但列表内部是使用双向链表实现的，所有向列表的两端添加元素的时间复杂度几乎为0，获取越接近两端的元素速度越快。</li>
+</ul>
+<blockquote>
+<p><strong>适用场景</strong>：适用新鲜事、微博、日志系统</p>
+<ul>
+<li>ArrayList使用数组方式存储数据，所以根据索引查询数据快，而新增或删除元素时需要涉及到位移操作，所以比较慢</li>
+<li>LinkeList使用双向链接方式存储数据，每个元素都记录前后元素的指针，所以插入、删除数据时只是更改前后元素的指针指向即可，速度非常快，然后通过下标查询元素时需要从头开始索引，所以比较慢</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180119/ie8jE60m8f.png?imageslim" alt="mark"></p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180119/L73CB7255h.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>集合类型(set)</p>
+<p>有序集合类型(Sorted Set)</p>
+</blockquote>
+<ul>
+<li>memcached：只支持基本k-v结构</li>
+</ul>
+<h3 id="2-Redis"><a href="#2-Redis" class="headerlink" title="2.Redis"></a>2.Redis</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/171205/CAdHb44JLa.png?imageslim" alt="mark"></p>
+<p>NoSql</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/171205/5jCehKh2d0.png?imageslim" alt="mark"></p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/171205/4cH5C21gCH.png?imageslim" alt="mark"></p>
+<h3 id="3-Redis的特性"><a href="#3-Redis的特性" class="headerlink" title="3.Redis的特性"></a>3.Redis的特性</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180119/IEka6J00LH.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>redis两种数据持久化方式:rdb和aof</p>
+<p>区别：</p>
+<ul>
+<li>rdb是指全量的快照，它会把整个内存中的数据在指定的时间间隔内全部持久化到本地硬盘中，实际操作过程是fork一个子进程，先将数据集写入临时文件，写入成功后，在替换之前的文件，用二进制压缩存储！</li>
+</ul>
+<ul>
+<li>aof持久化是以日志的形式记录服务器处理的每一个写、删除操作，查询操作不会记录，以文本的方式记录，可以打开文件看到详细的操作记录。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>rdb持久化频率低、速度慢、文件小，但恢复速度快</li>
+<li>aof持久化频率高、速度快、文件大</li>
+</ul>
+<p>综上，如果数据安全要求高，采用aof，因为频率高，不易丢失数据，反之用rdb；但是如果只是为了做备份，既不需要使用rdb，也不需要使用aof，使用主从备份即可！</p>
+</blockquote>
+<h3 id="4-Redis的优势"><a href="#4-Redis的优势" class="headerlink" title="4.Redis的优势"></a>4.Redis的优势</h3><p>1) 异常快速：Redis的速度非常快，每秒能执行约11万集合，每秒约81000+条记录。 </p>
+<p>2)支持丰富的数据类型：Redis支持最大多数开发人员已经知道像列表，集合，有序集合，散列数据类型。这使得它非常容易解决各种各样的问题，因为我们知道哪些问题是可以处理通过它的数据类型更好。 </p>
+<p>3)操作都是原子性：所有Redis操作是原子的，这保证了如果两个客户端同时访问的Redis服务器将获得更新后的值。 </p>
+<p>4)多功能实用工具：Redis是一个多实用的工具，可以在多个例如缓存，消息，队列使用(Redis原生支持发布/订阅)，任何短暂的数据，应用程序，如Web应用程序会话，网页命中计数等。 </p>
+<h3 id="5-Redis的适用场景"><a href="#5-Redis的适用场景" class="headerlink" title="5.Redis的适用场景"></a>5.Redis的适用场景</h3><p>1)会话缓存</p>
+<blockquote>
+<p>用Redis缓存会话比其他存储（如Memcached）的优势在于：Redis提供持久化。</p>
+</blockquote>
+<p>2)队列</p>
+<blockquote>
+<p>Reids在内存存储<code>引擎领域</code>的一大优点是提供 list 和 set 操作，这使得Redis能作为一个很好的消息队列平台来使用。Redis作为队列使用的操作，就类似于本地程序语言（如Python）对 list 的 push/pop 操作。</p>
+</blockquote>
+<p>3)排行榜/计数器</p>
+<blockquote>
+<p>Redis在内存中对数字进行递增或递减的操作实现非常好。集合（Set）和有序集合（Sorted Set）也使得我们在执行这些操作的时候变的非常简单，Redis只是正好提供了这两种数据结构。所以，我们要从排序集合中获取到排名最靠前的10个用户–我们称之为“user_scores”，我们只需要像下面一样执行即可：</p>
+<p>当然，这是假定你是根据你用户的分数做递增的排序。如果你想返回用户及用户的分数，你需要这样执行：</p>
+<p>ZRANGE user_scores 0 10 WITHSCORES</p>
+</blockquote>
+<p>4)发布/订阅</p>
+<blockquote>
+<p>如验证码验证</p>
+</blockquote>
+<p>Redis发布订阅与ActiveMQ的比较</p>
+<ul>
+<li>ActiveMQ支持多种消息协议，包括AMQP，MQTT，Stomp等，并且支持JMS规范，但Redis没有提供对这些协议的支持； </li>
+</ul>
+<ul>
+<li>ActiveMQ提供持久化功能，但Redis无法对消息持久化存储，一旦消息被发送，如果没有订阅者接收，那么消息就会丢失； </li>
+</ul>
+<ul>
+<li>ActiveMQ提供了消息传输保障，当客户端连接超时或事务回滚等情况发生时，消息会被重新发送给客户端，Redis没有提供消息传输保障；</li>
+</ul>
+<p>总之，ActiveMQ所提供的功能远比Redis发布订阅要复杂，毕竟Redis不是专门做发布订阅的，但是如果系统中已经有了Redis，并且需要基本的发布订阅功能，就没有必要再安装ActiveMQ了，因为可能ActiveMQ提供的功能大部分都用不到，而Redis的发布订阅机制就能满足需求。</p>
+<h3 id="6-关于SpringDataRedis"><a href="#6-关于SpringDataRedis" class="headerlink" title="6.关于SpringDataRedis"></a>6.关于SpringDataRedis</h3><blockquote>
+<p>Spring Data Redis是Spring Data家族的一部分，可以理解为定义了有关Redis操作的一系列的接口和模板操作，底层在利用jedis客户端对这些接口和模板进行了实现。当然我们也可以利用其他的客户端对其进行实现。另一方面，Spring Data Redis与spring进行了整合，可以非常方便的来实现redis的配置和操作。</p>
+</blockquote>
+<h3 id="RedisTemplate"><a href="#RedisTemplate" class="headerlink" title="RedisTemplate"></a>RedisTemplate</h3><blockquote>
+<p>Spring Data Redis提供的工具类，封装了对于Redis的五种数据结构的各种操作，如：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redisTemplate.opsForValue();//操作字符串</span><br><span class="line">redisTemplate.opsForHash();//操作hash</span><br><span class="line">redisTemplate.opsForList();//操作list</span><br><span class="line">redisTemplate.opsForSet();//操作set</span><br><span class="line">redisTemplate.opsForZSet();//操作zset</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<p>1)对于其他的一些通用命令，如expire，可以通过redisTemplate直接来调用</p>
+<p>2)RedisTemplate在创建时，可以指定其泛型类型：</p>
+<blockquote>
+<p>K:代表key的数据类型</p>
+<p>V:代表value的数据类型</p>
+<p>但这里的类型并不是redis中存储的数据类型，而是java中的数据类型。因为RedisTemplate会自动将java类型转为redis支持的数据类型：字符串、字节、二进制等。</p>
+</blockquote>
+<p>案例实现：</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/1a9fbAa62i.png?imageslim" alt="mark"></p>
+<p>控制台结果：<br><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/4kL8cKE0bb.png?imageslim" alt="mark"></p>
+<p>通过客户端工具查看结果：</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/mh9AmklAKb.png?imageslim" alt="mark"></p>
+<p>结果分析：</p>
+<blockquote>
+<p>控制台结果正常，但存储在redis中的数据带有大量的十六进制数字，原因就是因为我们存储的是java数据，但redis中只能存储字节，RedisTemplate默认采用JDK的Serialize方式进行了<code>数据序列化</code>，所以造成上述情况。</p>
+</blockquote>
+<p>RedisTemplate默认是使用JDK的Serialize进行序列化和反序列化。当然可以自定义，通过以下方法设置：</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/acDeI5kGLk.png?imageslim" alt="mark"></p>
+<p>注：参数se rializer是一个接口，Spring Data Redis提供了默认的实现</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/22dbljJa76.png?imageslim" alt="mark"></p>
+<p>区别：</p>
+<ul>
+<li>Jackson2JsonRedisSerializer：将对象序列化为JSON，底层默认使用的是JacksonJson工具。速度适中，可读性强</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/7CeeF117gf.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>将key和value的序列化为Json格式，虽然可读性强，但取麻烦！</p>
+</blockquote>
+<ul>
+<li>JdkSerializationRedisSerializer：将对象序列化为字节，通过JDK的自带方式。速度最快，<code>可读性差</code>。RedisTemplate的默认方式；</li>
+<li>OxmSerializer：将对象序列化为xml，速度最慢、可读性一般</li>
+</ul>
+<ul>
+<li>StringRedisSerializer：默认key和value都是String类型。然后通过getBytes方式将String编码为字节存储。速度快、可读性高，<code>但是需要人为将对象转为String</code>。</li>
+</ul>
+<p>如何使用？<br>1)key、hashkey：都采用StringRedisSerializer，因为key比较简单，而且可读性高</p>
+<p>2)value、hashvalue：看实际需求</p>
+<ul>
+<li>如果对Redis的存储空间没有要求，内存很大：都走默认的JDKSerializable，自动序列化和反序列化，简单；</li>
+<li>如果要求内存占用小：建议全走StringRedisSerializer。存储时，手动实现Object与JSON的序列化和反序列化</li>
+</ul>
+<blockquote>
+<p>在我们的项目中，redis使用较多，内存资源紧缺，所以我们的key和value都采用StringRedisSerializer，可读性高、内存占用小。即采用RedisTemplate&lt; String,String&gt;，并且设置序列化工具为StringRedisSerializer，在Spring Data Redis中，已经给出了默认的实现：StringRedisTemplate</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/06AIJLe75f.png?imageslim" alt="mark"></p>
+<p>底层对key和value等数据进行了处理！</p>
+<h4 id="RedisTemplate与StringRedisTemplate的区别："><a href="#RedisTemplate与StringRedisTemplate的区别：" class="headerlink" title="RedisTemplate与StringRedisTemplate的区别："></a>RedisTemplate与StringRedisTemplate的区别：</h4><ul>
+<li>前者默认采用JDK的Serialize方式对key和value进行序列化与反序列化，后者采用String转字节方式进行序列化和反序列化。</li>
+<li>前者可以存入任意类型数据；后者只能存入String类型数据。</li>
+<li>前者更方便，但是序列化后的数据内存占用大；后者较麻烦，但是生成的key可读性高，内存占用小。</li>
+</ul>
+<h4 id="联系"><a href="#联系" class="headerlink" title="联系:"></a>联系:</h4><blockquote>
+<p>StringRedisTemplate是RedisTemplate的子类，具备父类的所有功能，只不过限定了键和值都是String类型。</p>
+</blockquote>
+<h4 id="为什么要使用Spring-Data-Redis，而不是直接用Jedis？"><a href="#为什么要使用Spring-Data-Redis，而不是直接用Jedis？" class="headerlink" title="为什么要使用Spring Data Redis，而不是直接用Jedis？"></a>为什么要使用Spring Data Redis，而不是直接用Jedis？</h4><ul>
+<li>Spring Data Redis 对redis的操作进行了抽象。不仅支持Jedis，用户可以在其他Redis的客户端间自由切换，例如：Jredis</li>
+<li>Spring Data Redis 对连接的操作进行了封装，省去了建立连接，释放连接等繁琐代码。</li>
+<li>Spring Data Redis 支持各种不同的 key、value序列化方式，可以自由选择。</li>
+<li>提供了对Spring Cache的支持，使用注解完成缓存，没有代码侵入，<a href="http://jinnianshilongnian.iteye.com/blog/2001040" target="_blank" rel="noopener">详解可点击查看</a></li>
+</ul>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+            <li class="previous">
+                <a href= "/2017/12/05/对Redis的深入了解/" title= 对Redis的深入了解 >
+                    <span>Previous Post</span>
+                    <span>对Redis的深入了解</span>
+                </a>
+            </li>
+        
+        
+            <li class="next">
+                <a href= "/2017/08/20/dubbo/" title= dubbo >
+                    <span>Next Post</span>
+                    <span>dubbo</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 来必力City版安装代码 -->
+
+    
+    <div id="lv-container" data-id="city" data-uid= MTAyMC8yODQyOS81MDAw>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+
+<!-- City版安装代码已完成 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="emailto:774769024@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/cbmanong" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span>
+        <span
+            id="theme-info">Theme <a href="https://github.com/cbmanong" target="_blank">_initial</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">Welcome, No. <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 9 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/02</span><a class="archive-post-title" href= "/2018/03/02/关于MQ及Solr/" >关于MQ及Solr</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2017/12/05/对Redis的深入了解/" >对Redis的深入了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/03</span><a class="archive-post-title" href= "/2017/12/03/对Redis的初了解/" >对Redis的初了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对于跨域问题的理解/" >对于跨域问题的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/dubbo/" >dubbo</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    <!--  browser-sync -->
+    <!-- <script id="__bs_script__">
+    //<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.12'><\/script>".replace("HOST", location.hostname));
+    //]]>
+    </script> -->
+</html>
+
+

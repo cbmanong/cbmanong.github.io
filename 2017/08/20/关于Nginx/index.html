@@ -1,12 +1,532 @@
-extends views/main.pug
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        关于Nginx · _initial
+        
+    </title>
+    <link rel="icon" href= /avatar/favicon.png>
+    <!-- 提前加载place holder  -->
+    <style>
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+        @font-face {
+            font-family: 'Source Sans Pro';
+            src: url('/font/Source Sans Pro.woff'),
+            url('/font/Source Sans Pro.woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0px;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2s ease-in-out 0s 15;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        99% {
+            transform: translate3d(0, 0, 0);
+        }
+        99.1% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(-226px, 0, 0);
+        }
+    }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?c2e692c5407f95609121a9d80bd24510";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<header class="header">
 
-block head
-  title
-    = page.title + ' - ' + config.title
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+        <div class="toggle-banner">
+            <div class="blog-title">
+                <a href="/" >_initial</a>
+            </div>
+            <div class="post-banner">
+                <span class="post-name">关于Nginx</span>
+            </div>
+        </div>
+    </div>
+    
+    <a class="home-link" href=/>_initial</a>
+</header>
+    
+    
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+    
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            关于Nginx
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+        </p>
+        <!-- 404 -->
+        
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/08/20</span>
+            </div>
+            <!-- 
 
-block main
-  include mixins/post.pug
-  +post(page, 'post')
-  
-  include plugins/reward.pug
-  include plugins/livere.pug
+<div class="post-share iconfont-archer">
+    <ul class="share-box" data-href = "/2017/08/20/关于Nginx/" data-title = "关于Nginx" >
+        <li class="to-weibo">分享到微博</li>
+        <li class="to-wechat">分享到微信</li>
+        <li class="to-qq">分享到QQ</li>
+        <li class="to-twitter">分享到twitter</li>
+    </ul>
+</div> -->
+        
+    </div>
+</div>
+        <div class="container">
+            <main class="main post-page">
+    <div class="qr-mask"></div>
+<div class="QRcode-box">
+    <p>扫描二维码分享</p>
+    <div class="QRcode-close">×</div>
+</div>
+    <article class="article-entry">
+        <h3 id="1-什么是Nginx"><a href="#1-什么是Nginx" class="headerlink" title="1.什么是Nginx"></a>1.什么是Nginx</h3><p>明确Nginx是一个高性能的web和反向代理服务器，好处体现有：</p>
+<p>1)作为web服务器，与Apache相比，更具轻量级，占用更少的内存和资源，而且支持更多的并发连接，因为nginx处理请求是异步非阻塞的，而apache是阻塞型的；</p>
+<p>2)作为负载均衡服务器，nginx既可以在内部支持Rails和PHP，也可以支持作为http代理服务器对外进行服务;</p>
+<p>3)作为邮件代理服务器，一个非常优秀的邮件代理服务器；</p>
+<p>4)安装简单，配置文件简洁，bug少</p>
+<a id="more"></a>
+<h3 id="2-什么是反向代理服务器"><a href="#2-什么是反向代理服务器" class="headerlink" title="2.什么是反向代理服务器"></a>2.什么是反向代理服务器</h3><blockquote>
+<p>反向代理方式是指以代理服务器来接受网络上的用户请求，然后将用户请求转发给原始服务器，从原始服务器上获取结果后返回给用户端。简单说反向代理服务器的作用就是代替原始服务器让客户端访问。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180113/2bIHIE2aCg.png?imageslim" alt="mark"></p>
+<p>所以反向代理服务器的作用一大作用就是保护和隐藏了原始服务器，除此之外反向代理服务器可以负载均衡，具体如下：</p>
+<blockquote>
+<p>当反向代理服务器不止一个的时候，可以把它们当做一个集群，当更多的用户访问资源服务器的时候，让不同的代理服务器Z（x）去应答不同的用户，然后发送不同用户需要的资源。而且反向代理服务器像正向代理服务器一样拥有<code>CACHE</code>的作用，它可以缓存原始资源服务器B的资源，而不是每次都要向原始资源服务器B请求数据，特别是一些静态的数据，比如图片和文件。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180113/50EhfJi9CK.png?imageslim" alt="mark"></p>
+<h3 id="3-nginx为什么是一个高性能的web"><a href="#3-nginx为什么是一个高性能的web" class="headerlink" title="3.nginx为什么是一个高性能的web"></a>3.nginx为什么是一个高性能的web</h3><blockquote>
+<p>可以提高网站的性能，原因就是对于后端是动态服务来说，如java和php，这类服务器的IO处理能力不强，而nginx好处就是在于会把request请求读取完整之前先buffer住(buffer即缓冲区，作用就是开启一个缓冲区，先在这个缓冲区中进行数据存储，再把数据发送出去，好处就是可以把数据一次性地发给目标，相当于与即时传输可以节约这部分带宽)，这样交给后端的就是一个完整的http请求，从而提高后端的效率，而不是断断续续的传递(互联网上连接速度一般比较慢)，同样nginx也可以把response给buffer住，同样也是减轻后端的压力。</p>
+</blockquote>
+<h3 id="4-Nginx与多进程模式Apache对于高并发处理上的区别"><a href="#4-Nginx与多进程模式Apache对于高并发处理上的区别" class="headerlink" title="4.Nginx与多进程模式Apache对于高并发处理上的区别"></a>4.Nginx与多进程模式Apache对于高并发处理上的区别</h3><blockquote>
+<p>对于apache，每一个请求都会独占一个工作线程，当并发数到达几千时，就同时有几千的线程在处理请求，这对于操作系统来说，占用的内存非常大，线程的上下文切换带来的cpu开销也很大，性能就难以上去，同时这些开销是完全没有意义的。 对于Nginx来讲，一个进程只有一个主线程，通过<code>异步非阻塞的事件</code>(使用epoll和大量细节处的优化)处理机制，实现了循环处理多个准备好的事件，从而实现轻量级和高并发。具体为：</p>
+<blockquote>
+<p>没进来一个request请求，都有一个worker进程去处理，但不是全程的处理，会处理到可能发生阻塞的地方，比如向后端服务器转发request并等待请求返回时。这个时候worker进程在发送完请求后不会一直处于等待过程中，稍作休息，它会注册一个事件，目的就是当upstream返回结果了就继续进行工作。此时如果再有request进来，worker就会再按这种方式去处理。而一旦后端服务器返回结果了就会触发事件，worker才会来接手，这个request才会接着往下走。由于web server的工作性质决定了每个request的大部分生命都是在网络传输中，实际上花费在server机器上的时间片不多，所以这也导致几个进程就解决高并发的原因所在。</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>nginx是以多线程的方式来工作的;</li>
+<li>nginx在启动后会有一个主线程master和多个相互独立的worker进程。</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180118/E081Jf9gL2.png?imageslim" alt="mark"></p>
+<ul>
+<li>master进程</li>
+</ul>
+<blockquote>
+<p>主要用来管理worker进程，master进程充当整个进程组与用户的交互接口，它不需要处理网络事件，不负责业务的执行，只会通过管理worker进程来实现重启服务、平滑升级、更换日志文件、配置文件实时生效等功能。</p>
+<ul>
+<li>接收来自外界的信号，向各worker进程发送信号</li>
+<li>监控worker进程的运行状态，当worker进程异常情况退出后，会自动重新启动新的worker进程</li>
+</ul>
+</blockquote>
+<ul>
+<li>worker进程</li>
+</ul>
+<blockquote>
+<p>基本的网络事件，则是放在worker进程中来处理了。多个worker进程之间是对等的，他们同等竞争来自客户端的请求，各进程互相之间是独立的。<code>一个完整的请求只可能在一个worker进程中处理，一个worker进程，不可能处理其它进程的请求</code>。worker进程的个数是可以设置的，一般我们会<code>设置与机器cpu核数一致</code>，原因就是如果有更多的worker数，就会导致进程相互竞争cpu资源。</p>
+</blockquote>
+<h3 id="5-nginx负载均衡的5种策略"><a href="#5-nginx负载均衡的5种策略" class="headerlink" title="5.nginx负载均衡的5种策略"></a>5.nginx负载均衡的5种策略</h3><blockquote>
+<p>nginx可以根据客户端ip进行负载均衡，通过在upstream(被反向代理的server)里设置ip_hash，就可以针对同一个C类地址段中的客户端选择同一个后端服务器，除非那个后端服务器宕了才会换一个。</p>
+</blockquote>
+<p>nginx的upstream目前支持的5种方式的分配</p>
+<p>1)轮询(默认)</p>
+<p>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。<br>upstream backserver {<br>server 192.168.0.14;<br>server 192.168.0.15;<br>} </p>
+<p>2)指定权重(加权)</p>
+<p>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。<br>upstream backserver {<br>server 192.168.0.14 weight=10;<br>server 192.168.0.15 weight=10;<br>} </p>
+<p>3)ip绑定ip_hash(即同一ip被分配到固定的后端服务器)</p>
+<p>每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。<br>upstream backserver {<br>ip_hash;<br>server 192.168.0.14:88;<br>server 192.168.0.15:80;<br>} </p>
+<p>4)fair(第三方)</p>
+<p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。<br>upstream backserver {<br>server server1;<br>server server2;<br>fair;<br>} </p>
+<p>5)url_hash(第三方)</p>
+<p>按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。<br>upstream backserver {<br>server squid1:3128;<br>server squid2:3128;<br>hash $request_uri;<br>hash_method crc32;<br>}<br>在需要使用负载均衡的server中增加<br>proxy_pass <a href="http://backserver/" target="_blank" rel="noopener">http://backserver/</a>;<br>upstream backserver{<br>ip_hash;<br>server 127.0.0.1:9090 down; (down 表示单前的server暂时不参与负载) </p>
+<p>server 127.0.0.1:8080 weight=2; (weight 默认为1.weight越大，负载的权重就越大) </p>
+<p>server 127.0.0.1:6060; </p>
+<p>server 127.0.0.1:7070 backup; (其它所有的非backup机器down或者忙的时候，请求backup机器)<br>} </p>
+<p>max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误 </p>
+<p>fail_timeout:max_fails次失败后，暂停的时间</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+            <li class="previous">
+                <a href= "/2017/08/20/HttpClient和WebService/" title= HttpClient和WebService >
+                    <span>Previous Post</span>
+                    <span>HttpClient和WebService</span>
+                </a>
+            </li>
+        
+        
+            <li class="next">
+                <a href= "/2017/08/20/对分布式事务的理解/" title= 对分布式事务的理解 >
+                    <span>Next Post</span>
+                    <span>对分布式事务的理解</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 来必力City版安装代码 -->
+
+    
+    <div id="lv-container" data-id="city" data-uid= MTAyMC8yODQyOS81MDAw>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+
+<!-- City版安装代码已完成 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="emailto:774769024@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/cbmanong" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span>
+        <span
+            id="theme-info">Theme <a href="https://github.com/cbmanong" target="_blank">_initial</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">Welcome, No. <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 9 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/02</span><a class="archive-post-title" href= "/2018/03/02/关于MQ及Solr/" >关于MQ及Solr</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2017/12/05/对Redis的深入了解/" >对Redis的深入了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/03</span><a class="archive-post-title" href= "/2017/12/03/对Redis的初了解/" >对Redis的初了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对于跨域问题的理解/" >对于跨域问题的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/dubbo/" >dubbo</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    <!--  browser-sync -->
+    <!-- <script id="__bs_script__">
+    //<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.12'><\/script>".replace("HOST", location.hostname));
+    //]]>
+    </script> -->
+</html>
+
+

@@ -1,12 +1,536 @@
-extends views/main.pug
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        单点登录 · _initial
+        
+    </title>
+    <link rel="icon" href= /avatar/favicon.png>
+    <!-- 提前加载place holder  -->
+    <style>
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+        @font-face {
+            font-family: 'Source Sans Pro';
+            src: url('/font/Source Sans Pro.woff'),
+            url('/font/Source Sans Pro.woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0px;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2s ease-in-out 0s 15;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        99% {
+            transform: translate3d(0, 0, 0);
+        }
+        99.1% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(-226px, 0, 0);
+        }
+    }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?c2e692c5407f95609121a9d80bd24510";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<header class="header">
 
-block head
-  title
-    = page.title + ' - ' + config.title
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+        <div class="toggle-banner">
+            <div class="blog-title">
+                <a href="/" >_initial</a>
+            </div>
+            <div class="post-banner">
+                <span class="post-name">单点登录</span>
+            </div>
+        </div>
+    </div>
+    
+    <a class="home-link" href=/>_initial</a>
+</header>
+    
+    
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+    
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            单点登录
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+        </p>
+        <!-- 404 -->
+        
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/08/18</span>
+            </div>
+            <!-- 
 
-block main
-  include mixins/post.pug
-  +post(page, 'post')
-  
-  include plugins/reward.pug
-  include plugins/livere.pug
+<div class="post-share iconfont-archer">
+    <ul class="share-box" data-href = "/2017/08/18/单点登录/" data-title = "单点登录" >
+        <li class="to-weibo">分享到微博</li>
+        <li class="to-wechat">分享到微信</li>
+        <li class="to-qq">分享到QQ</li>
+        <li class="to-twitter">分享到twitter</li>
+    </ul>
+</div> -->
+        
+    </div>
+</div>
+        <div class="container">
+            <main class="main post-page">
+    <div class="qr-mask"></div>
+<div class="QRcode-box">
+    <p>扫描二维码分享</p>
+    <div class="QRcode-close">×</div>
+</div>
+    <article class="article-entry">
+        <h3 id="1-传统的登录流程"><a href="#1-传统的登录流程" class="headerlink" title="1.传统的登录流程"></a>1.传统的登录流程</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/LFHJhJ4aid.png?imageslim" alt="mark"></p>
+<ul>
+<li>存在的问题：<a id="more"></a></li>
+</ul>
+<blockquote>
+<p>1)登录和注册等只能运行在单个tomcat中，因为session无法在多个tomcat中进行共享，但是在我们的项目中所搭建的系统架构中每一个系统是由一个团队进行维护，每个系统都是单独部署运行一个tomcat，所以不能将用户的登录信息保存到session中，因为多个tomcat的session是不能共享的(注意：不是一定的，可以通过session拷贝实现session共享，即将多个tomcat的session进行同步拷贝，但这种方式效率很低 ，而且会导致数据的冗余且存在延迟，所以没人去用！)</p>
+<p>2)有多个用户注册登录就会有多个session，如何判断session是属于哪一用户的？</p>
+<blockquote>
+<p>通过cookie中的sessionid进行判断，通过sessionid找到对应的session对象；</p>
+<p>如何保证sessionid唯一？</p>
+<blockquote>
+<p> 创建新的session对象，浏览器会得到一个包含了sessionid的cookie，这个cookie的生命为-1，即只能在浏览器内存中存在，如果不关闭浏览器，那么cookie就会一直存在(sessionid在cookie中保存是临时的，随浏览器的关闭而删除)，下次请求时，再次执行request.getSession()方法时，因为可以通过cookie中的sessionid找到对应的session对象， 所以多次请求使用的是同一个session对象(保证在两次请求的间隔时间不超过服务端给session指定的生命，否则就会重新创建session对象，这就是为什么淘宝上登录账号长时间不操作需要重新登录的原因)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>如何解决？</li>
+</ul>
+<blockquote>
+<p>解决的关键就在于如何实现多个Tomcat之间的数据共享，Session是无法完成这一点的，因此需要其他东西来代替session的功能！</p>
+</blockquote>
+<ul>
+<li>需要具备的特点</li>
+</ul>
+<blockquote>
+<p>1)内存中保存，速度快</p>
+<p>2)数据具有时效性</p>
+</blockquote>
+<p>综上，我们可以使用redis来解决</p>
+<h3 id="1-什么是单点登录SSO-Single-Sign-On"><a href="#1-什么是单点登录SSO-Single-Sign-On" class="headerlink" title="1.什么是单点登录SSO(Single Sign-On)"></a>1.什么是单点登录SSO(Single Sign-On)</h3><blockquote>
+<h4 id="SSO是一种统一认证和授权机制，指的是访问统一服务器不同应用中的受保护资源的同一用户，只需要登录一次，即通过一个应用中的安全验证后，再访问其他应用中的受保护资源时，不需要再次重新登录验证。"><a href="#SSO是一种统一认证和授权机制，指的是访问统一服务器不同应用中的受保护资源的同一用户，只需要登录一次，即通过一个应用中的安全验证后，再访问其他应用中的受保护资源时，不需要再次重新登录验证。" class="headerlink" title="SSO是一种统一认证和授权机制，指的是访问统一服务器不同应用中的受保护资源的同一用户，只需要登录一次，即通过一个应用中的安全验证后，再访问其他应用中的受保护资源时，不需要再次重新登录验证。"></a>SSO是一种<code>统一认证和授权机制</code>，指的是访问统一服务器不同应用中的受保护资源的同一用户，只需要登录一次，即通过一个应用中的安全验证后，再访问其他应用中的受保护资源时，不需要再次重新登录验证。</h4></blockquote>
+<h3 id="2-解决的问题"><a href="#2-解决的问题" class="headerlink" title="2.解决的问题"></a>2.解决的问题</h3><blockquote>
+<h4 id="项目中解决了用户只需要登录一次就可以访问所有相互信任的应用系统，而不用重复登录。"><a href="#项目中解决了用户只需要登录一次就可以访问所有相互信任的应用系统，而不用重复登录。" class="headerlink" title="项目中解决了用户只需要登录一次就可以访问所有相互信任的应用系统，而不用重复登录。"></a>项目中解决了用户只需要登录一次就可以访问所有相互信任的应用系统，而不用重复登录。</h4></blockquote>
+<h3 id="3-通过redis简单实现单点登录"><a href="#3-通过redis简单实现单点登录" class="headerlink" title="3.通过redis简单实现单点登录"></a>3.通过redis简单实现单点登录</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/EEib343icb.png?imageslim" alt="mark"></p>
+<h4 id="步骤解析："><a href="#步骤解析：" class="headerlink" title="步骤解析："></a>步骤解析：</h4><p>用户登录效验通过，则保存到Redis中，保存到redis中就要需要一个唯一的key，所以生成用户绑定token，并将token存入到cookie中，用户每次请求都会携带cookie值，从cookie中取出token值到redis中进行判断用户的登录状态。登录的状态完全依赖cookie，但我们知道cookie是不能跨域的，如何解决？</p>
+<blockquote>
+<p>可以设置cookie的domain域实现cookie的跨域</p>
+<p>解析：</p>
+<p>如果登录是设置的cookie是www.taobao.com，现在如果跳转到另一个域名order.taobao.com，就不会携带刚刚的cookie，登录状态就没有了。但是我们将cookie的domain域属性设置为taobao.com，那么不管是www还是order都会读取cookie。但是如果主域名发生变化，登录状态就消失了！</p>
+</blockquote>
+<h3 id="4-跨域版单点登录"><a href="#4-跨域版单点登录" class="headerlink" title="4.跨域版单点登录"></a>4.跨域版单点登录</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180121/IBBbFD5E6m.png?imageslim" alt="mark"></p>
+<h4 id="但是依然存在问题：cookie被禁用怎么办？"><a href="#但是依然存在问题：cookie被禁用怎么办？" class="headerlink" title="但是依然存在问题：cookie被禁用怎么办？"></a>但是依然存在问题：cookie被禁用怎么办？</h4><ul>
+<li><h4 id="提醒用户启用cookie"><a href="#提醒用户启用cookie" class="headerlink" title="提醒用户启用cookie"></a>提醒用户启用cookie</h4></li>
+<li><h4 id="通过参数的拼接形式，不过要做好加密措施"><a href="#通过参数的拼接形式，不过要做好加密措施" class="headerlink" title="通过参数的拼接形式，不过要做好加密措施"></a>通过参数的拼接形式，不过要做好加密措施</h4></li>
+</ul>
+<h3 id="5-SSO的实现技术点："><a href="#5-SSO的实现技术点：" class="headerlink" title="5.SSO的实现技术点："></a>5.SSO的实现技术点：</h3><p>1)所有应用系统<code>共享一个身份认证系统</code></p>
+<blockquote>
+<p>明确统一的认证系统是SSO的前提之一。认证系统的主要功能就是将用户的登录信息与用户信息库进行比对，对用户进行登录认证；认证成功后，认证系统生成统一的认证标志(ticket),返回给用户。另一方面，认证系统还应该对ticket进行效验，判断其有效性。</p>
+</blockquote>
+<p>2)所有应用系统都能识别和提取ticket信息</p>
+<blockquote>
+<p>要实现SSO的功能，让用户只登陆一次，就必须让应用系统能够识别已经登录过的用户。主要就是通过对ticket进行识别和提取，通过与认证系统的通讯，能自动判断当前用户是否登录过，从而完成单点登录的功能。</p>
+</blockquote>
+<h4 id="6-统一身份认证机制："><a href="#6-统一身份认证机制：" class="headerlink" title="6.统一身份认证机制："></a>6.统一身份认证机制：</h4><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180118/jFfhmH1a4m.png?imageslim" alt="mark"></p>
+<p>1)用户请求访问业务系统。</p>
+<p>2)业务系统在系统中查看是否有对应请求的有效令牌，若有，则读取对应的身份信息，允许其访问；若没有或令牌无效，则把用户重定向到统一身份认证平台，并携带业务系统地址，进入第3)步。</p>
+<p>3)在统一身份认证平台提供的页面中，用户输入身份凭证信息，平台验证此身份凭证信息，若有效，则生成一个有效的令牌给用户，进入第4)步；若无效，则继续进行认证，直到认证成功或退出为止。</p>
+<p>4)用户携带第3)步获取的令牌，再次访问业务系统。</p>
+<p>5)业务系统获取用户携带的令牌，提交到认证平台进行有效性检查和身份信息获取。</p>
+<p>6)若令牌通过有效性检查，则认证平台会把令牌对应的用户身份信息返回给业务系统，业务系统把身份信息和有效令牌写入会话状态中，允许用户以此身份信息进行业务系统的各种操作；若令牌未通过有效性检查，则会再次重定向到认证平台，返回第3)步。</p>
+<p>　　通过统一身份认证平台获取的有效令牌，可以在各个业务系统之间实现应用漫游。</p>
+<h3 id="7-单点登录的优点："><a href="#7-单点登录的优点：" class="headerlink" title="7.单点登录的优点："></a>7.单点登录的优点：</h3><p>1)提高用户的效率</p>
+<blockquote>
+<p>用户只需要首次登陆即可，不再被多次登录困扰，也不需要记住多个ID和密码。另外，用户忘记密码并求助于客服人员的情况也会减少。</p>
+</blockquote>
+<p>2)提高开发人员的效率</p>
+<blockquote>
+<p>SSO为开发人员提供了一个<code>通用的身份验证框架</code> ，实际上，如果SSO机制是独立的，那么开发人员就完全不需要为身份验证操心。可以在对应用程序的请求中附带一个用户名就可以完成身份的验证。</p>
+</blockquote>
+<p>3)简化管理</p>
+<blockquote>
+<p>如果应用程序加入了单点登录协议，管理用户账户的负担就会减轻。简化的程度取决于应用程序，因为SSO只处理身份验证。所以，应用程序可能仍然需要设置用户的属性(如：访问特权)。</p>
+</blockquote>
+<h3 id="8-单点登录的缺点"><a href="#8-单点登录的缺点" class="headerlink" title="8.单点登录的缺点"></a>8.单点登录的缺点</h3><p>1)因为涉及到的系统很多，要重构必须要兼容所有的系统，可能很耗时，不利于重构。</p>
+<p>2)因为只需要登录一次，所有的授权的应用系统都可以访问，就可能导致一些很重要的信息泄露。</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+            <li class="previous">
+                <a href= "/2017/08/20/对分布式事务的理解/" title= 对分布式事务的理解 >
+                    <span>Previous Post</span>
+                    <span>对分布式事务的理解</span>
+                </a>
+            </li>
+        
+        
+    </ul>
+    <!-- 来必力City版安装代码 -->
+
+    
+    <div id="lv-container" data-id="city" data-uid= MTAyMC8yODQyOS81MDAw>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+
+<!-- City版安装代码已完成 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="emailto:774769024@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/cbmanong" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span>
+        <span
+            id="theme-info">Theme <a href="https://github.com/cbmanong" target="_blank">_initial</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">Welcome, No. <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 9 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/02</span><a class="archive-post-title" href= "/2018/03/02/关于MQ及Solr/" >关于MQ及Solr</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2017/12/05/对Redis的深入了解/" >对Redis的深入了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/03</span><a class="archive-post-title" href= "/2017/12/03/对Redis的初了解/" >对Redis的初了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对于跨域问题的理解/" >对于跨域问题的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/dubbo/" >dubbo</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    <!--  browser-sync -->
+    <!-- <script id="__bs_script__">
+    //<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.12'><\/script>".replace("HOST", location.hostname));
+    //]]>
+    </script> -->
+</html>
+
+

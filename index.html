@@ -1,5 +1,608 @@
-extends views/index
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        _initial
+        
+    </title>
+    <link rel="icon" href= /avatar/favicon.png>
+    <!-- 提前加载place holder  -->
+    <style>
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+        @font-face {
+            font-family: 'Source Sans Pro';
+            src: url('/font/Source Sans Pro.woff'),
+            url('/font/Source Sans Pro.woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0px;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2s ease-in-out 0s 15;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        99% {
+            transform: translate3d(0, 0, 0);
+        }
+        99.1% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(-226px, 0, 0);
+        }
+    }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?c2e692c5407f95609121a9d80bd24510";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+    
+        <body class="home-body">
+    
+    
+<header class="header index-header">
 
-block head
-  title
-    = config.title
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <a class="home-link" href=/>_initial</a>
+</header>
+    
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 文章页  -->
+    
+    <div class="site-intro-img" style="background-image: url(/intro/shouye.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            _initial
+            <!-- 文章页  -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+                好好学习，天天向上
+            
+            <!-- 文章页  -->
+            
+        <!-- 文章页meta -->
+        
+    </div>
+</div>
+        <div class="container">
+            <main class="main index-page">
+    <div class="qr-mask"></div>
+<div class="QRcode-box">
+    <p>扫描二维码分享</p>
+    <div class="QRcode-close">×</div>
+</div>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2018/03/02/关于MQ及Solr/" >
+                <div class="abstract-post-title">
+                    <h2 class="abstract-title">
+                        <span>
+                            关于MQ及Solr
+                        </span>
+                    </h2>
+                </div>
+                <div class="abstract-content">
+                    1.MQ
+在实际电商项目中，我们常使用mq来解决数据同步或程序间的通信问题。一个完整的电商项目肯定存在前台系统以及搜索系统，都会使用到后台的商品数据，但是前台系统使用了缓存、搜索系统有着自己的索引库，因此其数据不一定与后台同步，每当后台系统修改，它修改的是mysql，前台系统的缓存redis、以及搜索系统的solr中的数据，并没有同步修改。我们在后台系统进行 增、删、改操作时，顺便通知 前台系统、搜索系统，让他们去同步最新的数据，而不是在后台系统直接去操作redis或solr，这样系统就耦合在一起了。
+
+2.什么是MQ？
+MQ的底层实现既可以是JMS(java消息通信规范)的实现，也可以...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/03/02</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2017/12/05/对Redis的深入了解/" >
+                <div class="abstract-post-title">
+                    <h2 class="abstract-title">
+                        <span>
+                            对Redis的深入了解
+                        </span>
+                    </h2>
+                </div>
+                <div class="abstract-content">
+                    1.Redis的持久化
+持久化就是将数据保存到磁盘中，就算机器宕机或重启数据都不会丢失，而存储到内存中的数据就会丢失。而redis的强大很大程度上是由于其将所有数据存储到内存中，为了使redis在重启后仍能保证数据不丢失，需要将数据从内存中以某种形式持久化到硬盘中，redis支持两种方式的持久化，一种是RDB，另一种是AOF，可以单独使用一种或结合两种使用。
+
+
+2. RDB(redis的默认持久化方式)
+RDB方式是通过快照完成的，(快照的核心原理就是把redis在某个时间内存中 的所有数据都写入硬盘)当符合一定条件时redis会自动将内存中的所有数据进行快照并且存储到硬盘上(默认在主...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/05</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2017/12/03/对Redis的初了解/" >
+                <div class="abstract-post-title">
+                    <h2 class="abstract-title">
+                        <span>
+                            对Redis的初了解
+                        </span>
+                    </h2>
+                </div>
+                <div class="abstract-content">
+                    1.目前主流的缓存技术主要分为两类：Redis和Memcached
+区别在于：1)从性能上看：
+
+redis：单线程，因此在大数据量的情况下，略逊色于Memcached
+memcached：多线程，性能强劲，但是在数据量不大时，优势不明显
+
+2)从存储方式上看：
+
+redis：支持数据持久化和主从备份，数据更安全，可以搭建集群，内存的读写速度远超于硬盘
+
+
+memcached：数据存于内存中，没有持久化功能
+
+3)从数据结构上看：
+
+redis：除了基本的k-v结构外，支持更多复杂结构
+
+
+字符串类型(String)，Redis中最基础的K-V结构。其键和值都是字符串。类似Java的Ma...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/03</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2017/08/20/dubbo/" >
+                <div class="abstract-post-title">
+                    <h2 class="abstract-title">
+                        <span>
+                            dubbo
+                        </span>
+                    </h2>
+                </div>
+                <div class="abstract-content">
+                    1.关于Dubbo
+
+什么是soa服务？在我们的电商项目中，就是利用了soa服务，将整个网站进行拆分，分离出订单中心、用户中心、库存中心等多个服务，服务之间通过定义的接口进行联系；
+dubbo特点：
+就是按照分层的方式来架构，使用这种方式可以使各个层之间解耦合(或者最大限度地松耦合)。从服务模型的角度来看，Dubbo采用的是一种非常简单的模型，要么是提供方提供服务，要么是消费方消费服务，所以基于这一点可以抽象出服务提供方（Provider）和服务消费方（Consumer）两个角色。关于注册中心、协议支持、服务监控等内容。
+
+2.什么是RPC？
+3.Dubbo的作用
+4.Dubbo的应用场...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/08/20</span>
+                </div>
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/2017/08/20/对于跨域问题的理解/" >
+                <div class="abstract-post-title">
+                    <h2 class="abstract-title">
+                        <span>
+                            对于跨域问题的理解
+                        </span>
+                    </h2>
+                </div>
+                <div class="abstract-content">
+                    
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/08/20</span>
+                </div>
+            </div>
+        </article>
+    
+    <!-- paginator  -->
+    
+    <nav class="page-nav">
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">#NEXT</a>
+    </nav>
+    
+</main>
+            <!-- profile -->
+            
+            <div class="profile">
+    <img class="profile-avatar" src= /avatar/avatar.jpg >
+    <div class="profile-name">_initial</div>
+    
+    <div class="profile-signature">
+        witness me
+    </div>
+    
+    
+    <div class="profile-social">
+        
+    
+        
+            
+                <a href="emailto:774769024@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/cbmanong" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+
+    </div>
+    
+    
+        <div class="friends">
+            <div>FRIENDS</div>
+            
+                <span>
+                    <a href= //www.daihao18.com/ target="_black">Code 18</a>
+                </span>
+            
+                <span>
+                    <a href= //www.xulibin.tech/ target="_black">Mr.Xu</a>
+                </span>
+            
+        </div>
+    
+</div>
+            
+        </div>
+        <footer class="footer">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="emailto:774769024@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/cbmanong" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span>
+        <span
+            id="theme-info">Theme <a href="https://github.com/cbmanong" target="_blank">_initial</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">Welcome, No. <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 9 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/02</span><a class="archive-post-title" href= "/2018/03/02/关于MQ及Solr/" >关于MQ及Solr</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2017/12/05/对Redis的深入了解/" >对Redis的深入了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/03</span><a class="archive-post-title" href= "/2017/12/03/对Redis的初了解/" >对Redis的初了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对于跨域问题的理解/" >对于跨域问题的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/dubbo/" >dubbo</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    <!--  browser-sync -->
+    <!-- <script id="__bs_script__">
+    //<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.12'><\/script>".replace("HOST", location.hostname));
+    //]]>
+    </script> -->
+</html>
+
+

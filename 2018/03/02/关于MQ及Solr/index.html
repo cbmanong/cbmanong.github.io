@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- description -->
+	
+		<meta name="description" content="不惑的技术博客，记录前端学习笔记，个人成长"/>
+	
+	<!-- keywords -->
+	
+		<meta name="keywords" content="html,javaScript,Canvas,WebGL,CSS3,不惑,前端" />
+	
+	<!-- baidu verification -->
+	
+		<meta name="baidu-site-verification" content="a78PuLmufT" />
+	
+
+	
+	<title>关于MQ及Solr-null</title>
+	<!-- favicon -->
+	
+		<link rel="icon" href="/favicon.png" type="image/x-icon">
+	
+	<!-- css -->
+	<link rel="stylesheet" href="/css/style.css">	
+	<!--analysis-->
+	
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?f87249065955956e48c26976d03cfc45";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+	<div class="header">
+	<div class="nav-header">
+		<div class="navbar-logo">
+			 <a href="/" class="logo"></a>
+		</div>
+		<ul class="navbar-nav">
+			
+          		<li class="nav-item">
+					<a class="main-nav-link" href="/">Home</a>
+				</li>
+			
+          		<li class="nav-item">
+					<a class="main-nav-link" href="/archives">Archives</a>
+				</li>
+			
+          		<li class="nav-item">
+					<a class="main-nav-link" href="/about">About</a>
+				</li>
+			
+			
+				<li class="nav-item">
+					<a class="main-nav-link" href="/atom.xml">RSS</a>
+				</li>
+			
+		</ul>
+	</div>
+</div>
+	<div class="main-container">
+    	<div class="post-container">
+	<div class="post-title-info">
+		<div class="post-title">
+			<h1 class="title">关于MQ及Solr</h1>
+		</div>
+		<div class="post-meta">
+			
+			<span class="post-time">2018-03-02</span>
+		</div>
+	</div>
+	<div class="post-content"><h3 id="1-MQ"><a href="#1-MQ" class="headerlink" title="1.MQ"></a>1.MQ</h3><blockquote>
+<p>在实际电商项目中，我们常使用mq来解决<code>数据同步或程序间的通信问题</code>。一个完整的电商项目肯定存在前台系统以及搜索系统，都会使用到后台的商品数据，但是前台系统使用了缓存、搜索系统有着自己的索引库，因此其数据不一定与后台同步，每当后台系统修改，它修改的是mysql，前台系统的缓存redis、以及搜索系统的solr中的数据，并没有同步修改。我们在后台系统进行 增、删、改操作时，顺便通知 前台系统、搜索系统，让他们去同步最新的数据，而不是在后台系统直接去操作redis或solr，这样系统就耦合在一起了。</p>
+</blockquote>
+<h3 id="2-什么是MQ？"><a href="#2-什么是MQ？" class="headerlink" title="2.什么是MQ？"></a>2.什么是MQ？</h3><blockquote>
+<p>MQ的底层实现既可以是JMS(java消息通信规范)的实现，也可以是AMQP的实现。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/GLEamem6kL.png?imageslim" alt="mark"></p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/m3F8cgi0b4.png?imageslim" alt="mark"></p>
+<h3 id="3-什么是JMS？"><a href="#3-什么是JMS？" class="headerlink" title="3.什么是JMS？"></a>3.什么是JMS？</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/j40BGL8Ifj.png?imageslim" alt="mark"></p>
+<h3 id="4-什么是AMQP"><a href="#4-什么是AMQP" class="headerlink" title="4.什么是AMQP?"></a>4.什么是AMQP?</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/7CgE49L726.png?imageslim" alt="mark"></p>
+<h3 id="5-JMS和AMQP的区别"><a href="#5-JMS和AMQP的区别" class="headerlink" title="5.JMS和AMQP的区别"></a>5.JMS和AMQP的区别</h3><p>1)JMS定义了统一的接口来对消息操作进行了统一；而AMQP是通过规定协议来统一数据交互的格式。</p>
+<p>2)JMS限定了必须使用Java语言；AMQP只是协议，不规定实现方式，因此是跨语言的。</p>
+<p>3)JMS规定了两种消息模型，即点对点以及广播；而AMQP的消息模型更加丰富。</p>
+<h3 id="6-常见的MQ产品"><a href="#6-常见的MQ产品" class="headerlink" title="6.常见的MQ产品"></a>6.常见的MQ产品</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/45GHgimILl.png?imageslim" alt="mark"></p>
+<h3 id="6-1-关于RabbitMQ"><a href="#6-1-关于RabbitMQ" class="headerlink" title="6.1 关于RabbitMQ"></a>6.1 关于<a href="http://www.rabbitmq.com" target="_blank" rel="noopener">RabbitMQ</a></h3><blockquote>
+<ul>
+<li>RabbitMQ是基于Erlang语言开发的，它是一种通用的面向并发的编程语言</li>
+<li>RabbitMQ是一个典型的生产者、消费者模型，生产者不断产生新的消息，放入RabbitMQ的消息队列中，消费者从队列中获取消息。</li>
+</ul>
+<ul>
+<li>rabbitmq是一个开源的，在amqp基础上完整的，可复用的企业消息系统；</li>
+<li>支持主流的操作系统，Linux、Windows、MacOX等；</li>
+<li>多种开发语言支持，java、Python、Ruby、.NET、PHP、C/C++、node.js等</li>
+</ul>
+</blockquote>
+</div>
+</div>
+
+    
+        <div class="page-nav">
+            
+            
+                <a class="next-link" href="/2017/12/05/对Redis的深入了解/"> 对Redis的深入了解 </a>
+            
+        </div>
+    
+
+
+	</div>
+	<!--commemt layout-->
+	
+    
+    
+        <div class="comments-section">
+            <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjQ1MS85MDEy"></div>              
+        </div>
+    
+
+
+	<!--footer layout-->
+	<div class="footer">
+    <div class="footer-container">
+        <p>
+             ©2017  powered by Hexo and 
+            <a href="https://github.com/buhuo00/hexo-theme-grace">hexo-theme-grace</a>
+        </p>
+        <p>Hosted by <a href="https://pages.coding.me">Coding Pages</a></p>
+    </div>
+</div>
+	
+	<!--comment js-->
+	
+    
+    
+        <script type="text/javascript">
+            (function(d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+            
+                if (typeof LivereTower === 'function') { return; }
+            
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+            
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    
+
+</body>
+</html>

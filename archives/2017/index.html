@@ -1,487 +1,155 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="" />
-
-<link rel="shortcut icon" href="">
-
-
-<title> NaN</title>
-
-
-<link rel="stylesheet" href="/css/bulma.css">
-<link rel="stylesheet" href="/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/base.css">
-
-<body>
-
-  <style media="screen">
-hr {
-  height: 1px;
-    background-color: black;
-    margin-top: 0px;
-    border: none;
-    margin-bottom: 0px;
-}
-.black {
-
-
-background-color: hsl(0,0%,7%);;
-
-
-}
- #shadow {
-  text-shadow: 2px 3px 3px white;
-  margin-top: 3px;
-}
-h1 {
-  text-shadow: 2px 3px 3px black;
- }
-.menu {
-margin-top: -80px;
-
-
-
-
-}
-#nav {
-  margin-left: 2px;
-  margin-right: 2px;
-}
-  #banner {
-    position: relative;
-
-  }
-</style>
-<header>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- description -->
 	
-  <section class="section black is-medium" id="banner">
-  
-    <div class="container" style="position:relative">
-	<img src="http://orulqrhz4.bkt.clouddn.com/blog/180218/BKAkmbLd9C.jpg?imageslim" />
-      <h1 style="position:absolute; text-align:center;" id="sitetitle" class="title is-3 has-text-white-bis has-text-centered is-capitalized has-text-weight-bold">
-        
-        
-      </h1>
+		<meta name="description" content="不惑的技术博客，记录前端学习笔记，个人成长"/>
+	
+	<!-- keywords -->
+	
+		<meta name="keywords" content="html,javaScript,Canvas,WebGL,CSS3,不惑,前端" />
+	
+	<!-- baidu verification -->
+	
+		<meta name="baidu-site-verification" content="a78PuLmufT" />
+	
 
-      <h2 id="shadow" class="subtitle is-4 has-text-white is-capitalized has-text-centered">
-
-      </h2>
-
-    </div>
-
-    </div>
-  </section>
-<!--TOP Menu-->
-  <div class="menu level" >
-<div class="level-item has-text-centered"></div>
-    <nav class=".navbar level-item" >
-      
-        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
-
-
-            /
-            "> Home</a>
-        
-        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
-
-
-            mailto:cbmnanqing@163.com
-            "> Email</a>
-        
-        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
+	
+	<title>不惑的技术博客，记录前端学习笔记，个人成长-null</title>
+	<!-- favicon -->
+	
+		<link rel="icon" href="/favicon.png" type="image/x-icon">
+	
+	<!-- css -->
+	<link rel="stylesheet" href="/css/style.css">	
+	<!--analysis-->
+	
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?f87249065955956e48c26976d03cfc45";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 
 
-            https://github.com/cbmanong/
-            "> Project</a>
-        
-        <a style="text-shadow: 2px 2px 3px grey" id="nav" class="button is-text is-outlined is-primary " href="
-
-
-            /archives
-            "> Archive</a>
-        
-    </nav>
-    <div class="level-item has-text-centered"></div>
+</head>
+<body>
+	<div class="header">
+	<div class="nav-header">
+		<div class="navbar-logo">
+			 <a href="/" class="logo"></a>
+		</div>
+		<ul class="navbar-nav">
+			
+          		<li class="nav-item">
+					<a class="main-nav-link" href="/">Home</a>
+				</li>
+			
+          		<li class="nav-item">
+					<a class="main-nav-link" href="/archives">Archives</a>
+				</li>
+			
+          		<li class="nav-item">
+					<a class="main-nav-link" href="/about">About</a>
+				</li>
+			
+			
+				<li class="nav-item">
+					<a class="main-nav-link" href="/atom.xml">RSS</a>
+				</li>
+			
+		</ul>
+	</div>
 </div>
-
-  <hr>
-
-
-
-
-
-
-</header>
-
-
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/12/05/对Redis的深入了解/">对Redis的深入了解</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-12-05</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/12/03/对Redis的初了解/">对Redis的初了解</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-12-03</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/08/20/dubbo/">dubbo</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-08-20</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/08/20/对于跨域问题的理解/">对于跨域问题的理解</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-08-20</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/08/20/关于Nginx/">关于Nginx</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-08-20</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/08/20/HttpClient和WebService/">HttpClient和WebService</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-08-20</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/08/20/对分布式事务的理解/">对分布式事务的理解</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-08-20</p>
-    </strong>
-    </section>
-
-<style>
-    html,body {
-        background: white;
-    }
-    #archtitle {
-        margin-top: 35px;
-        font-size: 25px;
-        color: #1abc9c;
-    }
-    #arch
-          {
-        margin-bottom: 20px;
-    }
-   #archtit {
-        color: #1abc9c !important;
-        background-color: transparent;
-        -webkit-text-decoration-skip: objects;
-    }
-
-  #archtit:active, #archtit:hover {
-        outline-width: 0;
-        border-bottom-color: #555 !important;
-        color: #555 !important;
-        text-decoration: none !important;
-    }
-</style>
-<section id="arch" class="container has-text-centered ">
-
-<!--title-->
-    <h2 id="archtitle">
-        <a id="archtit" href="/2017/08/18/单点登录/">单点登录</a>
-    </h2>
-    <!--date and author-->
-    <strong id="archdate"><p>Posted on 2017-08-18</p>
-    </strong>
-    </section>
-
-<!-- 分页 -->
-<div id="fenye" class="container has-text-centered">
-    
-    
+	<div class="main-container">
+    	<div class="archives-container">
+	
+		
+		
+			
+			
+				
+				<div class="archive-title">
+					<h1 class="archive-year">2017</h1>
+				</div>
+			
+			<div class="archive-post">
+				<span class="archive-post-time">12-05</span>
+				<a href="/2017/12/05/对Redis的深入了解/" class="archive-post-link">对Redis的深入了解</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">12-03</span>
+				<a href="/2017/12/03/对Redis的初了解/" class="archive-post-link">对Redis的初了解</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">08-20</span>
+				<a href="/2017/08/20/dubbo/" class="archive-post-link">dubbo</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">08-20</span>
+				<a href="/2017/08/20/对于跨域问题的理解/" class="archive-post-link">对于跨域问题的理解</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">08-20</span>
+				<a href="/2017/08/20/HttpClient和WebService/" class="archive-post-link">HttpClient和WebService</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">08-20</span>
+				<a href="/2017/08/20/关于Nginx/" class="archive-post-link">关于Nginx</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">08-20</span>
+				<a href="/2017/08/20/对分布式事务的理解/" class="archive-post-link">对分布式事务的理解</a>
+			</div>
+		
+			
+			
+			<div class="archive-post">
+				<span class="archive-post-time">08-18</span>
+				<a href="/2017/08/18/单点登录/" class="archive-post-link">单点登录</a>
+			</div>
+		
+	
 </div>
-<div style="height:30px;"></div>
+	</div>
+	<!--commemt layout-->
+	
 
-
-<style>
-    #height {
-        height: 100px;
-        box-sizing: border-box;
-        color: rgb(51, 51, 51);
-        font-size: 18px;
-        font-weight: 400;
-
-    }
-
-    .footer_p {
-        box-sizing: border-box;
-        font-size: 18px;
-        font-weight: 200;
-        line-height: 27px;
-        text-align: center;
-        text-rendering: optimizelegibility;
-    }
-
-    .footer_link {
-        color: black;
-    }
-</style>
-<footer class="footer" id="height">
-
-    <div class="container">
-        <div class="content has-text-centered ">
-            <p class="footer_p">
-                Theme By<a href="https://github.com/cbmanong/" class="footer_link
-"> Cbmn.</a>
-            
-               
-               
-            </p>
-        </div>
-        <div class="content has-text-centered">
-            <p class="footer_p">Powered By <a href="https://hexo.io/" class="footer_link
-"> Hexo.</a></p>
-        </div>
+	<!--footer layout-->
+	<div class="footer">
+    <div class="footer-container">
+        <p>
+             ©2017  powered by Hexo and 
+            <a href="https://github.com/buhuo00/hexo-theme-grace">hexo-theme-grace</a>
+        </p>
+        <p>Hosted by <a href="https://pages.coding.me">Coding Pages</a></p>
     </div>
-
-</footer>
-
-<script src="/js/jquery.js"></script>
-
-<!-- 特效 -->
-<script type="text/javascript" color="#555" opacity='0.9' zIndex="-1" count="100"
-src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
-
-</script>
-<script src="/js/highlight.pack.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-        var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
-        codeBlocks.forEach(function(block, index) {
-            hljs.highlightBlock(block);
-        });
-    });
-</script>
-
+</div>
+	
+	<!--comment js-->
+	
 </body>
+</html>

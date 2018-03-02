@@ -359,7 +359,105 @@
 </ul>
 </blockquote>
 <p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/kC8geKjk3g.png?imageslim" alt="mark"></p>
-<h3 id="7-1-RabbitMQ消息队列模型"><a href="#7-1-RabbitMQ消息队列模型" class="headerlink" title="7.1 RabbitMQ消息队列模型"></a>7.1 RabbitMQ消息队列模型</h3>
+<h3 id="7-1-RabbitMQ消息队列模型"><a href="#7-1-RabbitMQ消息队列模型" class="headerlink" title="7.1 RabbitMQ消息队列模型"></a>7.1 RabbitMQ消息队列模型</h3><blockquote>
+<p>RabbitMQ提供了6种消息模型，但是第六种其实是RPC，并不是MQ，其中3.4.5属于订阅模型，只不过进行的路由的方式不同。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/G8a1Jf6f2I.png?imageslim" alt="mark"></p>
+<h3 id="7-1-2-基本消息模型"><a href="#7-1-2-基本消息模型" class="headerlink" title="7.1.2 基本消息模型"></a>7.1.2 基本消息模型</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/96mHk1314d.png?imageslim" alt="mark"></p>
+<ul>
+<li>生产者发送信息</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/0Edb3kea0e.png?imageslim" alt="mark"></p>
+<ul>
+<li>消费者消费信息</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/0h7g352JBb.png?imageslim" alt="mark"></p>
+<p>但是此时存在以下问题：</p>
+<p>问题1：如何确保消费者成功消费了信息？</p>
+<blockquote>
+<p>如果消费者者领取了消息后，还没执行消费操作就挂掉或抛出异常造成消息丢失或消费失败，所以此时需要消息确认机制(ACK)。</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/J137DC4h1I.png?imageslim" alt="mark"></p>
+<p>在RabbitMQ中，消息确认有两种模式：</p>
+<p>1)自动模式，无需任何操作，在消息被消费者领取后，就会自动确认，消息也会从队列中删除；</p>
+<p>2)手动模式，消息被消费后，需要调用RabbitMQ提供的API来实现消息确认。</p>
+<p>具体通过调用指定channel.basicConsumer()方法中的第二个参数来设置。</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/32jmJ0ILjC.png?imageslim" alt="mark"></p>
+<p>问题2：如果消息队列中的消息未被消费造成消息堆积如何解决？</p>
+<p>1)接收到信息后，而是通过线程池，异步消费</p>
+<p>2)采用workqueue，多个消费者监听同一队列进行竞争消费</p>
+<h3 id="7-1-3-Work-Queues模型"><a href="#7-1-3-Work-Queues模型" class="headerlink" title="7.1.3 Work Queues模型"></a>7.1.3 Work Queues模型</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/gh6l2a47lh.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>多个消费者消费同一队列采取竞争的形式进行消息消费，能者多劳。如果慢的人任务做不完，而快的人没有任务做就会造成资源的浪费。</p>
+</blockquote>
+<p>实现方式：</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/ck2j6B6dm5.png?imageslim" alt="mark"></p>
+<h3 id="7-1-4-订阅模型"><a href="#7-1-4-订阅模型" class="headerlink" title="7.1.4 订阅模型"></a>7.1.4 订阅模型</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/5kkf06ah38.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>明确在订阅模型中，一个消息可以被多个消费者消费，不同于work queues模型的是在订阅模型中有4个角色，生产者、交换机、消息队列、消费者，此时生产者生产的消息不再发送到队列中，而是发给交换机，由<code>交换机</code>进行消息的处理，例如递交给某个特别队列、递交给所有队列、或是将消息丢弃。到底如何操作，取决于交换机的类型。</p>
+</blockquote>
+<h4 id="交换机的类型："><a href="#交换机的类型：" class="headerlink" title="交换机的类型："></a>交换机的类型：</h4><blockquote>
+<h4 id="注意：交换机只负责转发消息，不具备存储消息的能力，消息队列进行消息的缓存。"><a href="#注意：交换机只负责转发消息，不具备存储消息的能力，消息队列进行消息的缓存。" class="headerlink" title="注意：交换机只负责转发消息，不具备存储消息的能力，消息队列进行消息的缓存。"></a>注意：交换机只负责转发消息，不具备存储消息的能力，消息队列进行消息的缓存。</h4></blockquote>
+<p>1)Fanout:广播，将消息交给所有绑定到交换机的消息队列中</p>
+<p>2)Direct：定向，把消息交给符合指定routing key 的队列</p>
+<p>3)通配符：把消息交给符合routing pattern（路由模式） 的队列</p>
+<h3 id="7-1-4-1-广播模式"><a href="#7-1-4-1-广播模式" class="headerlink" title="7.1.4.1 广播模式"></a>7.1.4.1 广播模式</h3><p>流程：</p>
+<p>1） 可以有多个消费者</p>
+<p>2） 每个消费者有自己的queue（队列）</p>
+<p>3） 每个队列都要绑定到Exchange（交换机）</p>
+<p>4） 生产者发送的消息，只能发送到交换机，交换机来决定要发给哪个队列，生产者无法决定</p>
+<p>5） 交换机把消息发送给绑定过的所有队列</p>
+<p>6） 队列的消费者都能拿到消息。实现一条消息被多个消费者消费</p>
+<p>代码实现：</p>
+<ul>
+<li>对于生产者：</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/KF9F0adi4g.png?imageslim" alt="mark"></p>
+<p>此时存在两个变化：</p>
+<p>变化1：不再声明队列，而是声明交换机；</p>
+<p>变化2：消息发送到交换机中，不再发送到队列。</p>
+<ul>
+<li>消费者</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/GH0gL7DL56.png?imageslim" alt="mark"></p>
+<h3 id="7-1-4-2定向模式"><a href="#7-1-4-2定向模式" class="headerlink" title="7.1.4.2定向模式"></a>7.1.4.2定向模式</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/FAICIh2HlI.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>区别于广播模式的是：</p>
+<p>在广播模式中，一条消息会被所有订阅的队列消费，而在定向模式中，不同的消息被不同的队列消费，此时队列与交换机的绑定就不能是任意的，而是指定一个Routingkey(路由key)，消息的发送方在向交换机发送消息时也需指定消息的routingkey，交换机在根据消息的路由key发送给指定的消息队列，只有队列的routing key与消息的 routing key完全一致，才会接收到消息。</p>
+</blockquote>
+<p>案例：</p>
+<blockquote>
+<p>通过此种模式解决前后台以及搜索系统之间的商品数据同步问题</p>
+</blockquote>
+<ul>
+<li>生产者，模拟后台系统</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/kggJci3jJ9.png?imageslim" alt="mark"></p>
+<ul>
+<li>消费者1，模拟前台系统</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/m9G66gGKLI.png?imageslim" alt="mark"></p>
+<ul>
+<li>消费者2，模拟搜索系统</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/BLKF3JE2AK.png?imageslim" alt="mark"></p>
+<h3 id="7-1-4-3-Topic通配符模型"><a href="#7-1-4-3-Topic通配符模型" class="headerlink" title="7.1.4.3 Topic通配符模型"></a>7.1.4.3 Topic通配符模型</h3><blockquote>
+<p>Topic类型的Exchange与Direct相比，都是可以让消息被不同的队列消费。只不过Topic类型Exchange可以让队列在绑定routing key 的时候使用通配符！routingkey 一般都是有一个或多个单词组成，多个单词之间以”.”分割。 </p>
+</blockquote>
+<p>通配符规则：</p>
+<p>​    #：匹配一个或多个词</p>
+<p>​    *：匹配不多不少恰好1个词</p>
+<h3 id="8-相关问题"><a href="#8-相关问题" class="headerlink" title="8.相关问题"></a>8.相关问题</h3><p>问题1：如何避免消息丢失？</p>
+<p>1)可以通过ACK机制来保证消息一定被消费</p>
+<p>2)为了避免mq宕机导致消息丢失，可以进行消息持久化，注意前提是队列和exchange都要持久化</p>
+<p>3)发送消息时，将消息及消息的状态记录到数据库表中</p>
+<p>4)rabbitmq集群，防止宕机</p>
+<p>5)RabbitMQ中，生产者确认机制（publish confirm）</p>
+<p>6)事务</p>
+<p>问题2：如何避免重复消费？</p>
+<p>1)保证接口的幂等性</p>
+<p>2)记录消息的状态</p>
+
     </article>
     <!-- 前后页  -->
     <ul class="post-paginator">
@@ -465,7 +563,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MQ"><span class="toc-number">1.</span> <span class="toc-text">1.MQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-什么是MQ？"><span class="toc-number">2.</span> <span class="toc-text">2.什么是MQ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-什么是JMS？"><span class="toc-number">3.</span> <span class="toc-text">3.什么是JMS？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-什么是AMQP"><span class="toc-number">4.</span> <span class="toc-text">4.什么是AMQP?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-JMS和AMQP的区别"><span class="toc-number">5.</span> <span class="toc-text">5.JMS和AMQP的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-常见的MQ产品"><span class="toc-number">6.</span> <span class="toc-text">6.常见的MQ产品</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-关于RabbitMQ"><span class="toc-number">7.</span> <span class="toc-text">7. 关于RabbitMQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-RabbitMQ消息队列模型"><span class="toc-number">8.</span> <span class="toc-text">7.1 RabbitMQ消息队列模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MQ"><span class="toc-number">1.</span> <span class="toc-text">1.MQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-什么是MQ？"><span class="toc-number">2.</span> <span class="toc-text">2.什么是MQ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-什么是JMS？"><span class="toc-number">3.</span> <span class="toc-text">3.什么是JMS？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-什么是AMQP"><span class="toc-number">4.</span> <span class="toc-text">4.什么是AMQP?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-JMS和AMQP的区别"><span class="toc-number">5.</span> <span class="toc-text">5.JMS和AMQP的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-常见的MQ产品"><span class="toc-number">6.</span> <span class="toc-text">6.常见的MQ产品</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-关于RabbitMQ"><span class="toc-number">7.</span> <span class="toc-text">7. 关于RabbitMQ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-RabbitMQ消息队列模型"><span class="toc-number">8.</span> <span class="toc-text">7.1 RabbitMQ消息队列模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-2-基本消息模型"><span class="toc-number">9.</span> <span class="toc-text">7.1.2 基本消息模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-3-Work-Queues模型"><span class="toc-number">10.</span> <span class="toc-text">7.1.3 Work Queues模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-4-订阅模型"><span class="toc-number">11.</span> <span class="toc-text">7.1.4 订阅模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#交换机的类型："><span class="toc-number">11.1.</span> <span class="toc-text">交换机的类型：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注意：交换机只负责转发消息，不具备存储消息的能力，消息队列进行消息的缓存。"><span class="toc-number">11.2.</span> <span class="toc-text">注意：交换机只负责转发消息，不具备存储消息的能力，消息队列进行消息的缓存。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-4-1-广播模式"><span class="toc-number">12.</span> <span class="toc-text">7.1.4.1 广播模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-4-2定向模式"><span class="toc-number">13.</span> <span class="toc-text">7.1.4.2定向模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-4-3-Topic通配符模型"><span class="toc-number">14.</span> <span class="toc-text">7.1.4.3 Topic通配符模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-相关问题"><span class="toc-number">15.</span> <span class="toc-text">8.相关问题</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

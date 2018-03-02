@@ -1,106 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<!-- description -->
-	
-		<meta name="description" content="不惑的技术博客，记录前端学习笔记，个人成长"/>
-	
-	<!-- keywords -->
-	
-		<meta name="keywords" content="html,javaScript,Canvas,WebGL,CSS3,不惑,前端" />
-	
-	<!-- baidu verification -->
-	
-		<meta name="baidu-site-verification" content="a78PuLmufT" />
-	
+extends views/main.pug
 
-	
-	<title>不惑的技术博客，记录前端学习笔记，个人成长-null</title>
-	<!-- favicon -->
-	
-		<link rel="icon" href="/favicon.png" type="image/x-icon">
-	
-	<!-- css -->
-	<link rel="stylesheet" href="/css/style.css">	
-	<!--analysis-->
-	
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?f87249065955956e48c26976d03cfc45";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+block head
+  title
+    = config.title
 
-
-</head>
-<body>
-	<div class="header">
-	<div class="nav-header">
-		<div class="navbar-logo">
-			 <a href="/" class="logo"></a>
-		</div>
-		<ul class="navbar-nav">
-			
-          		<li class="nav-item">
-					<a class="main-nav-link" href="/">Home</a>
-				</li>
-			
-          		<li class="nav-item">
-					<a class="main-nav-link" href="/archives">Archives</a>
-				</li>
-			
-          		<li class="nav-item">
-					<a class="main-nav-link" href="/about">About</a>
-				</li>
-			
-			
-				<li class="nav-item">
-					<a class="main-nav-link" href="/atom.xml">RSS</a>
-				</li>
-			
-		</ul>
-	</div>
-</div>
-	<div class="main-container">
-    	<div class="archives-container">
-	
-		
-		
-			
-			
-				
-				<div class="archive-title">
-					<h1 class="archive-year">2018</h1>
-				</div>
-			
-			<div class="archive-post">
-				<span class="archive-post-time">03-02</span>
-				<a href="/2018/03/02/关于MQ及Solr/" class="archive-post-link">关于MQ及Solr</a>
-			</div>
-		
-	
-</div>
-	</div>
-	<!--commemt layout-->
-	
-
-	<!--footer layout-->
-	<div class="footer">
-    <div class="footer-container">
-        <p>
-             ©2017  powered by Hexo and 
-            <a href="https://github.com/buhuo00/hexo-theme-grace">hexo-theme-grace</a>
-        </p>
-        <p>Hosted by <a href="https://pages.coding.me">Coding Pages</a></p>
-    </div>
-</div>
-	
-	<!--comment js-->
-	
-</body>
-</html>
+block main
+  include mixins/post.pug
+  -var time
+  -site.posts.sort('date', 'desc').each(function(post) {
+    -var year = post.date.year()
+    -if (time != year) {
+      -if (time) {
+        h2.archive-title
+          = year
+      -}
+      -time = year
+    -}
+    +post(post, 'archive')
+  -})

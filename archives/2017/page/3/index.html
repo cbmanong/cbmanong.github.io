@@ -290,21 +290,49 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/03/02/关于MQ及Solr/" >
+            <a class="abstract-title" href = "/2017/08/20/对分布式事务的理解/" >
                 
-                    <span>关于MQ及Solr</span>
+                    <span>对分布式事务的理解</span>
             </a>
             <div class="abstract-content">
-                1.MQ
-在实际电商项目中，我们常使用mq来解决数据同步或程序间的通信问题。一个完整的电商项目肯定存在前台系统以及搜索系统，都会使用到后台的商品数据，但是前台系统使用了缓存、搜索系统有着自己的索引库，因此其数据不一定与后台同步，每当后台系统修改，它修改的是mysql，前台系统的缓存redis、以及搜索系统的solr中的数据，并没有同步修改。我们在后台系统进行 增、删、改操作时，顺便通知 前台系统、搜索系统，让他们去同步最新的数据，而不是在后台系统直接去操作redis或solr，这样系统就耦合在一起了。
+                1.什么是分布式事务？
+事务指的是逻辑上的一组操作，组成这组操作的各个单元要么全部成功，要么全部失败。
+事务必须满足传统事务的特性，即原子性、一致性、隔离性和持久性。
+分布式事务就是指事务的参与者、支持事务的服务器、资源服务器一级事务管理器分别位于不同的分布式系统的不同节点之上。简单说就是一次大的操作由不同小的操作组成，这些小的操作分布在不同服务器上，且属于不同的应用，分布式事务需要保证这些小操作要么全部成功，要么全部失败。本质上来说，分布式事务就是为了保证不同数据库的数据一致性。
 
-2.什么是MQ？
-MQ的底层实现既可以是JMS(java消息通信规范)的实现，也可以...
+2.分布式事务的应用场景
+案例1：用户下单除了在订单表插入一条记录外，对应商品表的这个商品数量3必须减去...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/03/02</span>
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/08/20</span>
+                </div>
+                <!-- tags  -->
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2017/08/18/单点登录/" >
+                
+                    <span>单点登录</span>
+            </a>
+            <div class="abstract-content">
+                1.传统的登录流程
+
+存在的问题：
+
+
+1)登录和注册等只能运行在单个tomcat中，因为session无法在多个tomcat中进行共享，但是在我们的项目中所搭建的系统架构中每一个系统是由一个团队进行维护，每个系统都是单独部署运行一个tomcat，所以不能将用户的登录信息保存到session中，因为多个tomcat的session是不能共享的(注意：不是一定的，可以通过session拷贝实现session共享，即将多个tomcat的session进行同步拷贝，但这种方式效率很低 ，而且会导致数据的冗余且存在延迟，所以没人去用！)
+2)有多个用户注册登录就会有多个session，如何判断s...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/08/18</span>
                 </div>
                 <!-- tags  -->
                 
@@ -312,6 +340,10 @@ MQ的底层实现既可以是JMS(java消息通信规范)的实现，也可以...
         </article>
     
     <!-- paginator  -->
+    
+    <nav class="page-nav">
+        <a class="extend prev" rel="prev" href="/archives/2017/page/2/">&#60; PREV</a><a class="page-number" href="/archives/2017/">1</a><a class="page-number" href="/archives/2017/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
     
 </main>
             <!-- profile -->

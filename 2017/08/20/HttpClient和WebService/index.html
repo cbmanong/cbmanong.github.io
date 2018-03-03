@@ -337,7 +337,12 @@
 <blockquote>
 <p>HttpClient用来调用服务，它是模拟一个浏览器(通过java代码)，通过http协议，向某个URL地址发起Http请求，并且获取服务器返回的响应结果。</p>
 </blockquote>
-<a id="more"></a>特点：<br><br>1)基于标准、纯净的java语言，实现了Http1.0和Http1.1;<br><br>2)以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）;<br><br>3)支持Http/HTTPS协议;<br><br>&gt; http协议作用简单说就是规定了传输数据的格式，即具备请求头、响应头、请求体和响应体等信息。<br><br>4)通过Http代理建立透明的连接;<br><br>5)自动处理Set-Cookie中的cookie。<br><br><br><br>&gt; 在我们的项目中前台系统通过接口访问的方式访问后台系统，获取数据。<br>&gt;<br>&gt; 而接口访问的方式通常分两种：<br>&gt;<br>&gt; 1)JS访问(浏览器直接访问)<br><br><img src="http://orulqrhz4.bkt.clouddn.com/blog/180120/cAHGEHbF7B.png?imageslim" alt="mark"><br><br>&gt; <em> ajax ，不能实现跨域<br>&gt; </em> jsonp，可以实现跨域，但是只支持GET请求，因为底层是根据script标签，而html中所有的标签都只支持get请求<br>&gt;<br>&gt; 2)java代码访问<br>&gt;<br>&gt; <em> HttpClient，轻量级<br>&gt;<br><br><img src="http://orulqrhz4.bkt.clouddn.com/blog/180120/04DJ8eJg3k.png?imageslim" alt="mark"><br><br>&gt; </em> WebService，相比前者较重<br>&gt;<br>&gt; &gt; WebService又分为两大类：<br>&gt; &gt;<br>&gt; &gt; 1)基于SOAP协议(soap=http+xml)，即使用http协议发送xml格式的信息<br>&gt; &gt;<br>&gt; &gt; 2)Rest风格轻量级的WebService，以资源为中心，通过http的四个方法：post、put、delete、get实现crud，客户端和服务端之间需要通过json或xml格式进行表述传递信息<br>&gt;<br>&gt; 我们这里采用HttpClient，除了相比webservice更轻之外，http速度效率更高，虽然soap能处理复杂的数据。<br><br>### <a name="long">关于短连接与长连接</a><br><br>&gt; 短连接：每次发起请求都要重新创建连接，请求结束连接断开；<br>&gt;<br>&gt; 长连接：第一次请求会创建连接，但不断开，下次再进行请求的时候，依然使用这个连接。<br>&gt;<br>&gt; 注意：<br>&gt;<br>&gt; &gt; http协议是短连接，虽然HttpClient使用的是http协议，但它是长连接，因为在浏览器或服务器在其请求头信息加入一下代码connection：keep-alive，TCP连接在发送后将仍然保持打开状态，于是，浏览器可以继续通过相同的连接发送请求。保持连接节省了为每个请求建立新连接所需的时间，还节约了带宽。<br><br>Http协议底层是<code>Tcp协议</code>，每次建立连接都要进行<code>三次握手</code>，断开连接还需<code>四次挥手</code>，频繁的创建和销毁是很<code>消耗资源</code>的，<em>HttpClient中默认采用的是长连接</em>，通过http连接池管理器进行管理，来减少对资源的销毁，提高执行效率。但是这种长连接不一定是稳定的，可能会断开，如果访问的服务端已经断开了连接，作为客户端的HttpClient是不知道的，此时连接池中的这个连接就是一个无效的连接，如果这样的连接很多，因为连接数有限，就会造成有效连接数的减少，服务器的压力会变大，直至崩溃。因此，<code>定期清理无效的连接</code>显得尤为重要。注意如果使用浏览器正常访问默认的是短连接，如果使用的是长连接，每次请求都不会断开，但tomcat连接数有限，就会造成别人无法访问的情况。<br><br>* 使用连接池管理器<br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 演示：使用HttpClient的连接池管理连接</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpConnectManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 构建连接池管理器对象</span></span><br><span class="line">        PoolingHttpClientConnectionManager cm = <span class="keyword">new</span> PoolingHttpClientConnectionManager();</span><br><span class="line">        <span class="comment">// 设置最大连接数</span></span><br><span class="line">        cm.setMaxTotal(<span class="number">200</span>);</span><br><span class="line">        <span class="comment">// 设置每个主机地址的并发数</span></span><br><span class="line">        cm.setDefaultMaxPerRoute(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构建请求配置信息</span></span><br><span class="line">        RequestConfig config = RequestConfig.custom().setConnectTimeout(<span class="number">1000</span>) <span class="comment">// 创建连接的最长时间</span></span><br><span class="line">                .setConnectionRequestTimeout(<span class="number">500</span>) <span class="comment">// 从连接池中获取到连接的最长时间</span></span><br><span class="line">                .setSocketTimeout(<span class="number">10</span> * <span class="number">1000</span>) <span class="comment">// 数据传输的最长时间</span></span><br><span class="line">                .setStaleConnectionCheckEnabled(<span class="keyword">true</span>) <span class="comment">// 提交请求前测试连接是否可用</span></span><br><span class="line">                .build();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构建HttpClient对象,把连接池、请求配置对象作为参数</span></span><br><span class="line">        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm)</span><br><span class="line">                .setDefaultRequestConfig(config).build();</span><br><span class="line"></span><br><span class="line">        doGet(httpClient);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(CloseableHttpClient httpClient)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 创建http GET请求</span></span><br><span class="line">        HttpGet httpGet = <span class="keyword">new</span> HttpGet(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">        <span class="comment">// 使用默认ResponseHandler来处理</span></span><br><span class="line">        String result = httpClient.execute(httpGet, <span class="keyword">new</span> BasicResponseHandler());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>特点：<br><br>1)基于标准、纯净的java语言，实现了Http1.0和Http1.1;<br><br>2)以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）;<br><br>3)支持Http/HTTPS协议;<br><br>&gt; http协议作用简单说就是规定了传输数据的格式，即具备请求头、响应头、请求体和响应体等信息。<br><br>4)通过Http代理建立透明的连接;<br><br>5)自动处理Set-Cookie中的cookie。<br><br><br><br>在我们的项目中前台系统通过接口访问的方式访问后台系统，获取数据。<br><br>而接口访问的方式通常分两种：<br><br>1)JS访问(浏览器直接访问)<br><br><img src="http://orulqrhz4.bkt.clouddn.com/blog/180120/cAHGEHbF7B.png?imageslim" alt="mark"><br><br><em> ajax ，不能实现跨域
+
+
+</em> jsonp，可以实现跨域，但是只支持GET请求，因为底层是根据script标签，而html中所有的标签都只支持get请求<br><br>2)java代码访问<br><br><em> HttpClient，轻量级<br><br><img src="http://orulqrhz4.bkt.clouddn.com/blog/180120/04DJ8eJg3k.png?imageslim" alt="mark">
+
+</em> WebService，相比前者较重<br><br>WebService又分为两大类：<br><br>1)基于SOAP协议(soap=http+xml)，即使用http协议发送xml格式的信息<br><br>2)Rest风格轻量级的WebService，以资源为中心，通过http的四个方法：post、put、delete、get实现crud，客户端和服务端之间需要通过json或xml格式进行表述传递信息<br><br>&gt; 我们这里采用HttpClient，除了相比webservice更轻之外，http速度效率更高，虽然soap能处理复杂的数据。<br><br>### 2.关于短连接与长连接<br><br>&gt; 短连接：每次发起请求都要重新创建连接，请求结束连接断开；<br>&gt;<br>&gt; 长连接：第一次请求会创建连接，但不断开，下次再进行请求的时候，依然使用这个连接。<br><br>注意：<br><br>&gt; http协议是短连接，虽然HttpClient使用的是http协议，但它是长连接，因为在浏览器或服务器在其请求头信息加入一下代码connection：keep-alive，TCP连接在发送后将仍然保持打开状态，于是，浏览器可以继续通过相同的连接发送请求。保持连接节省了为每个请求建立新连接所需的时间，还节约了带宽。<br><br>Http协议底层是<code>Tcp协议</code>，每次建立连接都要进行<code>三次握手</code>，断开连接还需<code>四次挥手</code>，频繁的创建和销毁是很<code>消耗资源</code>的，<em>HttpClient中默认采用的是长连接</em>，通过http连接池管理器进行管理，来减少对资源的销毁，提高执行效率。但是这种长连接不一定是稳定的，可能会断开，如果访问的服务端已经断开了连接，作为客户端的HttpClient是不知道的，此时连接池中的这个连接就是一个无效的连接，如果这样的连接很多，因为连接数有限，就会造成有效连接数的减少，服务器的压力会变大，直至崩溃。因此，<code>定期清理无效的连接</code>显得尤为重要。注意如果使用浏览器正常访问默认的是短连接，如果使用的是长连接，每次请求都不会断开，但tomcat连接数有限，就会造成别人无法访问的情况。<br><br>* 使用连接池管理器<br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 演示：使用HttpClient的连接池管理连接</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpConnectManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 构建连接池管理器对象</span></span><br><span class="line">        PoolingHttpClientConnectionManager cm = <span class="keyword">new</span> PoolingHttpClientConnectionManager();</span><br><span class="line">        <span class="comment">// 设置最大连接数</span></span><br><span class="line">        cm.setMaxTotal(<span class="number">200</span>);</span><br><span class="line">        <span class="comment">// 设置每个主机地址的并发数</span></span><br><span class="line">        cm.setDefaultMaxPerRoute(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构建请求配置信息</span></span><br><span class="line">        RequestConfig config = RequestConfig.custom().setConnectTimeout(<span class="number">1000</span>) <span class="comment">// 创建连接的最长时间</span></span><br><span class="line">                .setConnectionRequestTimeout(<span class="number">500</span>) <span class="comment">// 从连接池中获取到连接的最长时间</span></span><br><span class="line">                .setSocketTimeout(<span class="number">10</span> * <span class="number">1000</span>) <span class="comment">// 数据传输的最长时间</span></span><br><span class="line">                .setStaleConnectionCheckEnabled(<span class="keyword">true</span>) <span class="comment">// 提交请求前测试连接是否可用</span></span><br><span class="line">                .build();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构建HttpClient对象,把连接池、请求配置对象作为参数</span></span><br><span class="line">        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm)</span><br><span class="line">                .setDefaultRequestConfig(config).build();</span><br><span class="line"></span><br><span class="line">        doGet(httpClient);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(CloseableHttpClient httpClient)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 创建http GET请求</span></span><br><span class="line">        HttpGet httpGet = <span class="keyword">new</span> HttpGet(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">        <span class="comment">// 使用默认ResponseHandler来处理</span></span><br><span class="line">        String result = httpClient.execute(httpGet, <span class="keyword">new</span> BasicResponseHandler());</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意：</p>
 <p>1)HttpClient中提供了一接口ResponseHandler，我们实际在执行HttpClient请求时，传入了实现了该接口中的handleResponse方法的实现类对象(new BasicResponseHandler)，就会自动发起请求，处理响应，对结果进行转换，并且返回，最后归还到连接池中；并且HttpClient提供了该接口的一个默认实现，可以把结果解析为字符串。</p>
 <blockquote>
@@ -354,6 +359,23 @@
 <p>volatile 瞬态的，不稳定的；作用就是保证变量的任何修改，对任何线程而言都是可见的。</p>
 <p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180119/gkDGJcD3Gk.png?imageslim" alt="mark"></p>
 <p>涉及cpu的构造，冯诺依曼计算机原理将计算机分cpu、内存和硬盘，cpu从内存中读取数据进行运算，将运算结果放到cpu内部寄存器中，然后会将结果写到内存中。但cpu运算频率很高，远远超过内存的读写速率，所以cpu为了提高自己的读写速率，就在cpu内部开辟了一片缓存，即一级缓存，二级缓存，三级缓存，目的就是将内存中读写速率最高的数据放入缓存中，直接在缓存中进行读写，不再与内存进行交互，速度就会提高。但是出现问题，内存中存在变量shutdown，默认值是false，在我们当前实例中，while循环，所以改变量读写频率很高，所以会将该变量读取放入缓存中，为false，如果此时开启另外一线程，调用shutdown方法，将内存中shutdown值改为true，但此时缓存中的值依然为false ，volidate目的就是告诉cpu当前变量是不稳定，不要放入缓存中，每次从内存中读取，虽然效率有所降低，但安全</p>
+<h3 id="3-关于webservice"><a href="#3-关于webservice" class="headerlink" title="3.关于webservice"></a>3.关于webservice</h3><p><img src="http://orulqrhz4.bkt.clouddn.com/blog/171211/e3HJdg9dA6.png?imageslim" alt="mark"></p>
+<blockquote>
+<p>WebService就是<code>系统之间</code>通过<code>网络传递数据</code>的一种手段和解决方案，即用来解决系统间数据交互问题。</p>
+</blockquote>
+<p>注意：一定要具有服务端和客户端，服务端提供接口，客户端调用接口显示数据。</p>
+<h4 id="3-1WebService分类："><a href="#3-1WebService分类：" class="headerlink" title="3.1WebService分类："></a>3.1WebService分类：</h4><ul>
+<li><h4 id="SOAP方式（简单对象访问协议）"><a href="#SOAP方式（简单对象访问协议）" class="headerlink" title="SOAP方式（简单对象访问协议）"></a>SOAP方式（简单对象访问协议）</h4></li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/171211/ilcDGbdE4I.png?imageslim" alt="mark"></p>
+<ul>
+<li><h4 id="RESTful风格"><a href="#RESTful风格" class="headerlink" title="RESTful风格"></a>RESTful风格</h4></li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/171211/G7CBf66iFJ.png?imageslim" alt="mark"></p>
+<h4 id="java方面的规范："><a href="#java方面的规范：" class="headerlink" title="java方面的规范："></a>java方面的规范：</h4><ul>
+<li><h4 id="jax-ws规范：对应SOAP方式编程"><a href="#jax-ws规范：对应SOAP方式编程" class="headerlink" title="jax-ws规范：对应SOAP方式编程"></a>jax-ws规范：对应SOAP方式编程</h4></li>
+<li><h4 id="jax-rs规范：对应REST方式编程"><a href="#jax-rs规范：对应REST方式编程" class="headerlink" title="jax-rs规范：对应REST方式编程"></a>jax-rs规范：对应REST方式编程</h4></li>
+</ul>
 
     </article>
     <!-- 前后页  -->
@@ -361,16 +383,16 @@
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2017/08/20/对于跨域问题的理解/" title= 对于跨域问题的理解 >
-                    <div class="nextTitle">对于跨域问题的理解</div>
+                <a href= "/2017/08/20/关于Nginx/" title= 关于Nginx >
+                    <div class="nextTitle">关于Nginx</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2017/08/20/关于Nginx/" title= 关于Nginx >
-                    <div class="prevTitle">关于Nginx</div>
+                <a href= "/2017/08/20/对分布式事务的理解/" title= 对分布式事务的理解 >
+                    <div class="prevTitle">对分布式事务的理解</div>
                 </a>
             
         </li>
@@ -465,7 +487,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是HttpClient"><span class="toc-number">1.</span> <span class="toc-text">1.什么是HttpClient</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是HttpClient"><span class="toc-number">1.</span> <span class="toc-text">1.什么是HttpClient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-关于webservice"><span class="toc-number">2.</span> <span class="toc-text">3.关于webservice</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1WebService分类："><span class="toc-number">2.1.</span> <span class="toc-text">3.1WebService分类：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SOAP方式（简单对象访问协议）"><span class="toc-number">2.2.</span> <span class="toc-text">SOAP方式（简单对象访问协议）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RESTful风格"><span class="toc-number">2.3.</span> <span class="toc-text">RESTful风格</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#java方面的规范："><span class="toc-number">2.4.</span> <span class="toc-text">java方面的规范：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jax-ws规范：对应SOAP方式编程"><span class="toc-number">2.5.</span> <span class="toc-text">jax-ws规范：对应SOAP方式编程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jax-rs规范：对应REST方式编程"><span class="toc-number">2.6.</span> <span class="toc-text">jax-rs规范：对应REST方式编程</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -583,7 +605,26 @@
     
     
     
-    <div class="total-archive"> Total : 9 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 10 </div>
     
     <div class="post-archive">
     
@@ -634,17 +675,22 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
         </li>
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/01</span><a class="archive-post-title" href= "/2017/02/01/Rest/" >Rest</a>
         </li>
     
     </div>

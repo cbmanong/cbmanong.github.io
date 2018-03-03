@@ -290,60 +290,36 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2017/12/05/对Redis的深入了解/" >
+            <a class="abstract-title" href = "/2017/02/01/Rest/" >
                 
-                    <span>对Redis的深入了解</span>
+                    <span>Rest</span>
             </a>
             <div class="abstract-content">
-                1.Redis的持久化
-持久化就是将数据保存到磁盘中，就算机器宕机或重启数据都不会丢失，而存储到内存中的数据就会丢失。而redis的强大很大程度上是由于其将所有数据存储到内存中，为了使redis在重启后仍能保证数据不丢失，需要将数据从内存中以某种形式持久化到硬盘中，redis支持两种方式的持久化，一种是RDB，另一种是AOF，可以单独使用一种或结合两种使用。
+                1.关于REST
+
+什么叫状态转移？
+
+即具体含义的状态转移(从服务端到客户端)，通过状态码表示操作结果，如404表示资源找不到，200操作成功，303重定向等。
+2.什么是REST？
+全称Resource Representational State Transfer,简单说就是资源在网络上以某种表现形式进行状态转移，描叙的是在网络中client和server的一种交互形式，REST本身不实用，实用的是如何设计RESTful API(REST风格的网络接口)
 
 
-2. RDB(redis的默认持久化方式)
-RDB方式是通过快照完成的，(快照的核心原理就是把redis在某个时间内存中 的所有数据都写入硬盘)当符合一定条件时redis会自动将内存中的所有数据进行快照并且存储到硬盘上(默认在主...
+Resource
+
+
+资源,即数据
+
+
+Representational
+
+
+某种表现形式，如json、xml、jpeg等
+...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/12/05</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2017/12/03/对Redis的初了解/" >
-                
-                    <span>对Redis的初了解</span>
-            </a>
-            <div class="abstract-content">
-                1.目前主流的缓存技术主要分为两类：Redis和Memcached
-区别在于：1)从性能上看：
-
-redis：单线程，因此在大数据量的情况下，略逊色于Memcached
-memcached：多线程，性能强劲，但是在数据量不大时，优势不明显
-
-2)从存储方式上看：
-
-redis：支持数据持久化和主从备份，数据更安全，可以搭建集群，内存的读写速度远超于硬盘
-
-
-memcached：数据存于内存中，没有持久化功能
-
-3)从数据结构上看：
-
-redis：除了基本的k-v结构外，支持更多复杂结构
-
-
-字符串类型(String)，Redis中最基础的K-V结构。其键和值都是字符串。类似Java的Ma...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/12/03</span>
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/02/01</span>
                 </div>
                 <!-- tags  -->
                 

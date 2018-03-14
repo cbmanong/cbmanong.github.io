@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>SpringBoot · _initial</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        height: 50vh;
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180228 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180228 media="(max-width: 980px)"/>
+    <link rel="icon" href= /assets/favicon.ico>
+    <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >_initial</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">SpringBoot</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>_initial</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            SpringBoot
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/03/14</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="1-Spring的Java配置方式"><a href="#1-Spring的Java配置方式" class="headerlink" title="1.Spring的Java配置方式"></a>1.Spring的Java配置方式</h3><blockquote>
+<p>通过配置类完全替代XML配置</p>
+</blockquote>
+<h3 id="1-1-常用注解"><a href="#1-1-常用注解" class="headerlink" title="1.1.常用注解"></a>1.1.常用注解</h3><ul>
+<li>@Configuration</li>
+</ul>
+<blockquote>
+<p>作用于类上，相当于一个xml配置文件</p>
+</blockquote>
+<ul>
+<li>@Bean</li>
+</ul>
+<blockquote>
+<p>作用于方法上(一个生产指定对象的方法)上，相当于xml配置文件的&lt; bean&gt;,方法的返回值即创建的对象</p>
+</blockquote>
+<ul>
+<li>@PropertySource</li>
+</ul>
+<blockquote>
+<p>指定属性文件所在的路径，格式：classpath：路径地址</p>
+</blockquote>
+<ul>
+<li>@Value</li>
+</ul>
+<blockquote>
+<p>读取配置文件中的值，格式：”${}”</p>
+</blockquote>
+<h3 id="1-2加载配置类"><a href="#1-2加载配置类" class="headerlink" title="1.2加载配置类"></a>1.2加载配置类</h3><blockquote>
+<p>通过AnnotationConfigApplicationContext对象加载配置类</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/C35LEf82Da.png?imageslim" alt="mark"></p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/2845ii7gLh.png?imageslim" alt="mark"></p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><ul>
+<li>配置类</li>
+</ul>
+<blockquote>
+<p>通过Spring的java配置方式实现HttpClient</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span> <span class="comment">// 标记当前类是Spring的配置类</span></span><br><span class="line"><span class="meta">@PropertySource</span>(value = <span class="string">"classpath:httpClient.properties"</span>) <span class="comment">// 指定属性文件路径</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;http.maxTotal&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer maxTotal;<span class="comment">// 读取属性文件中的参数</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;http.defaultMaxPerRoute&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer defaultMaxPerRoute;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;http.connectTimeout&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer connectTimeout;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;http.connectionRequestTimeout&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer connectionRequestTimeout;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;http.socketTimeout&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Integer socketTimeout;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;http.staleConnectionCheckEnabled&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> Boolean staleConnectionCheckEnabled;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  注册连接池管理器</span></span><br><span class="line"><span class="comment">     *  注意：</span></span><br><span class="line"><span class="comment">     *      1）要注册什么类型Bean，返回值就是其类型即可。</span></span><br><span class="line"><span class="comment">     *      2）方法名一般是类型名的首字母小写形式。</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> HttpClientConnectionManager <span class="title">httpClientConnectionManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        PoolingHttpClientConnectionManager connectionManager = <span class="keyword">new</span> PoolingHttpClientConnectionManager();</span><br><span class="line">        connectionManager.setMaxTotal(maxTotal);</span><br><span class="line">        connectionManager.setDefaultMaxPerRoute(defaultMaxPerRoute);</span><br><span class="line">        <span class="keyword">return</span> connectionManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注册RequestConfig</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RequestConfig <span class="title">requestConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> RequestConfig.custom().setConnectTimeout(connectTimeout)</span><br><span class="line">                .setConnectionRequestTimeout(connectionRequestTimeout).setSocketTimeout(socketTimeout)</span><br><span class="line">                .setStaleConnectionCheckEnabled(staleConnectionCheckEnabled).build();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注册HttpClient</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> HttpClient <span class="title">httpClient</span><span class="params">(HttpClientConnectionManager manager, RequestConfig config)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> HttpClientBuilder.create().setConnectionManager(manager).setDefaultRequestConfig(config)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试类</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 加载Spring容器</span></span><br><span class="line">        AnnotationConfigApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(SpringConfig.class);</span><br><span class="line">        <span class="comment">// 获取HttpClient对象</span></span><br><span class="line">        HttpClient httpClient = context.getBean(HttpClient.class);</span><br><span class="line">        <span class="comment">// 创建get请求</span></span><br><span class="line">        HttpGet get = <span class="keyword">new</span> HttpGet(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">        <span class="comment">// 发起请求，获取响应</span></span><br><span class="line">        String content = httpClient.execute(get, <span class="keyword">new</span> BasicResponseHandler());</span><br><span class="line">        </span><br><span class="line">        System.out.println(content);</span><br><span class="line">        <span class="comment">// 销毁容器</span></span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>结果</li>
+</ul>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/dF5EB5fF90.png?imageslim" alt="mark"></p>
+<h3 id="2-SpringBoot"><a href="#2-SpringBoot" class="headerlink" title="2.SpringBoot"></a>2.SpringBoot</h3><blockquote>
+<p>在传统的javaEE开发中，复杂的配置以及混乱的依赖管理严重影响了开发效率，而SpringBoot简化了基于Spring的应用开发，只需要“run”就能创建一个独立的、生产级别的Spring应用，Spring Boot为Spring平台及第三方库提供开箱即用的设置（提供默认设置），这样我们就可以简单的开始。多数Spring Boot应用只需要很少的Spring配置。</p>
+</blockquote>
+<h3 id="2-1SpringBoot的好处"><a href="#2-1SpringBoot的好处" class="headerlink" title="2.1SpringBoot的好处"></a>2.1SpringBoot的好处</h3><ul>
+<li>为所有 Spring 的开发者提供一个非常快速的、广泛接受的入门体验;</li>
+</ul>
+<ul>
+<li><code>开箱即用</code>（启动器starter-其实就是SpringBoot提供的一个jar包），但通过自己设置参数，即可快速摆脱这种方式;</li>
+</ul>
+<ul>
+<li>提供了一些大型项目中常见的非功能性特性，如内嵌服务器、安全、指标，健康检测、外部化配置等;</li>
+</ul>
+<ul>
+<li>绝对没有代码生成，也无需 XML 配置。</li>
+</ul>
+<h3 id="2-2-注意"><a href="#2-2-注意" class="headerlink" title="2.2 注意"></a>2.2 注意</h3><ul>
+<li>所有的SpringBoot项目都要以Starter作为一个父项目</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>SpringBoot官方推荐使用jar，不推荐jsp，但实际项目中常用到jsp页面，所以要正常解析jsp页面我们只需要引入依赖即可</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 解决jsp无法解析问题 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.embed<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat-embed-jasper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>SpringBoot官方声明兼容的maven版本是3.2及以上版本</li>
+</ul>
+<h3 id="3-关于启动器"><a href="#3-关于启动器" class="headerlink" title="3.关于启动器"></a>3.关于启动器</h3><blockquote>
+<p>SpringBoot其实已经对大量的Spring组件或第三方组件进行了集成，并且进行了大量的默认配置。但是是否使用这些默认配置取决于我们是否添加了这些组件的依赖。因此，如果我们要启动自动配置，只要引入对应的依赖即可，而SpringBoot给这些第三方组件都添加了启动器（starter），所以我们只需要引入对应的启动器即可。这些自动配置类中的默认配置并非不能修改，我们可以通过提供一个全局配置文件：<em>application.properties</em>来进行自定义配置</p>
+</blockquote>
+<h3 id="3-1启动器"><a href="#3-1启动器" class="headerlink" title="3.1启动器"></a>3.1启动器</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line">1.Spring Boot application starters</span><br><span class="line">spring-boot-starter-thymeleaf</span><br><span class="line">使用Thymeleaf视图构建MVC Web应用程序</span><br><span class="line"></span><br><span class="line">spring-boot-starter-ws</span><br><span class="line">使用Spring Web服务。1.4不推荐使用，推荐使用spring-boot-starter-web-services</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-couchbase</span><br><span class="line">Starter for using Couchbase document-oriented database and Spring Data Couchbase</span><br><span class="line"></span><br><span class="line">spring-boot-starter-artemis</span><br><span class="line">使用Apache Artemis启动JMS消息传递</span><br><span class="line"></span><br><span class="line">spring-boot-starter-web-services</span><br><span class="line">使用Spring Web服务</span><br><span class="line"></span><br><span class="line">spring-boot-starter-mail</span><br><span class="line">支持使用Java Mail和Spring Framework发送电子邮件</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-redis</span><br><span class="line">使用Redis键值数据存储与Spring Data Redis和Jedis客户端</span><br><span class="line"></span><br><span class="line">spring-boot-starter-web</span><br><span class="line">启动器构建web，包括RESTful，使用Spring MVC的应用程序。使用Tomcat作为默认嵌入式容器</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-gemfire</span><br><span class="line">Starter for using GemFire distributed data store and Spring Data GemFire</span><br><span class="line"></span><br><span class="line">spring-boot-starter-activemq</span><br><span class="line">使用Apache ActiveMQ启动JMS消息传递</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-elasticsearch</span><br><span class="line">使用Elasticsearch搜索和分析引擎和Spring Data Elasticsearch</span><br><span class="line"></span><br><span class="line">spring-boot-starter-integration</span><br><span class="line">Starter for using Spring Integration</span><br><span class="line"></span><br><span class="line">spring-boot-starter-test</span><br><span class="line">Spring Boot应用程序用于测试包括JUnit，Hamcrest和Mockito</span><br><span class="line"></span><br><span class="line">spring-boot-starter-hornetq</span><br><span class="line">使用HornetQ启动JMS消息传递。1.4已弃用，推荐使用spring-boot-starter-artemis</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jdbc</span><br><span class="line">使用JDBC与Tomcat JDBC连接池</span><br><span class="line"></span><br><span class="line">spring-boot-starter-mobile</span><br><span class="line">使用Spring Mobile构建Web应用程序的入门</span><br><span class="line"></span><br><span class="line">spring-boot-starter-validation</span><br><span class="line">使用Java Bean校验与Hibernate校验器</span><br><span class="line"></span><br><span class="line">spring-boot-starter-hateoas</span><br><span class="line">使用Spring MVC和Spring HATEOAS构建基于超媒体的RESTful Web应用程序的入门</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jersey</span><br><span class="line">使用JAX-RS和Jersey构建RESTful Web应用程序的入门。 spring-boot-starter-web的替代品</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-neo4j</span><br><span class="line">使用Neo4j图数据库和Spring Data Neo4j</span><br><span class="line"></span><br><span class="line">spring-boot-starter-websocket</span><br><span class="line">使用Spring Framework的WebSocket支持构建WebSocket应用程序</span><br><span class="line"></span><br><span class="line">spring-boot-starter-aop</span><br><span class="line">使用Spring AOP和AspectJ进行面向方面编程</span><br><span class="line"></span><br><span class="line">spring-boot-starter-amqp</span><br><span class="line">使用Spring AMQP和Rabbit MQ的入门</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-cassandra</span><br><span class="line">使用Cassandra分布式数据库和Spring Data Cassandra</span><br><span class="line"></span><br><span class="line">spring-boot-starter-social-facebook</span><br><span class="line">使用Spring Social Facebook</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jta-atomikos</span><br><span class="line">使用Atomikos进行JTA事务</span><br><span class="line"></span><br><span class="line">spring-boot-starter-security</span><br><span class="line">使用Spring Security</span><br><span class="line"></span><br><span class="line">spring-boot-starter-mustache</span><br><span class="line">使用Mustache视图构建MVC Web应用程序</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-jpa</span><br><span class="line">使用Spring Data JPA与Hibernate</span><br><span class="line"></span><br><span class="line">spring-boot-starter</span><br><span class="line">核心启动器，包括自动配置支持，日志记录和YAML</span><br><span class="line"></span><br><span class="line">spring-boot-starter-velocity</span><br><span class="line">使用Velocity视图构建MVC Web应用程序。1.4已弃用</span><br><span class="line"></span><br><span class="line">spring-boot-starter-groovy-templates</span><br><span class="line">使用Groovy模板视图构建MVC Web应用程序</span><br><span class="line"></span><br><span class="line">spring-boot-starter-freemarker</span><br><span class="line">使用FreeMarker视图构建MVC Web应用程序</span><br><span class="line"></span><br><span class="line">spring-boot-starter-batch</span><br><span class="line">使用Spring Batch</span><br><span class="line"></span><br><span class="line">spring-boot-starter-redis</span><br><span class="line">使用Redis键值数据存储与Spring Data Redis和Jedis客户端的入门。1.4已弃用，建议使用spring-boot-starter-data-redis</span><br><span class="line"></span><br><span class="line">spring-boot-starter-social-linkedin</span><br><span class="line">Stater for using Spring Social LinkedIn</span><br><span class="line"></span><br><span class="line">spring-boot-starter-cache</span><br><span class="line">支持使用Spring Framework的缓存</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-solr</span><br><span class="line">使用带有Spring Data Solr的Apache Solr搜索平台</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-mongodb</span><br><span class="line">使用MongoDB和Spring Data MongoDB</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jooq</span><br><span class="line">使用jOOQ访问SQL数据库。 spring-boot-starter-data-jpa或spring-boot-starter-jdbc的替代方法</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jta-narayana</span><br><span class="line">Spring Boot启动Narayana JTA</span><br><span class="line"></span><br><span class="line">spring-boot-starter-cloud-connectors</span><br><span class="line">启动者使用Spring Cloud连接器，简化了连接到云平台中的服务，如Cloud Foundry和Heroku</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jta-bitronix</span><br><span class="line">使用Bitronix进行JTA事务</span><br><span class="line"></span><br><span class="line">spring-boot-starter-social-twitter</span><br><span class="line">使用Spring Social Twitter</span><br><span class="line"></span><br><span class="line">spring-boot-starter-data-rest</span><br><span class="line">使用Spring Data REST通过REST暴露Spring数据存储库</span><br><span class="line"></span><br><span class="line">2.Spring Boot production starters</span><br><span class="line">spring-boot-starter-actuator</span><br><span class="line">使用Spring Boot的Actuator，提供生产就绪的功能，以帮助您监视和管理您的应用程序</span><br><span class="line"></span><br><span class="line">spring-boot-starter-remote-shell</span><br><span class="line">使用CRaSH远程shell通过SSH监视和管理您的应用程序</span><br><span class="line"></span><br><span class="line">3.Spring Boot technical starters</span><br><span class="line">spring-boot-starter-undertow</span><br><span class="line">使用Undertow作为嵌入式servlet容器。 spring-boot-starter-tomcat的替代方法</span><br><span class="line"></span><br><span class="line">spring-boot-starter-jetty</span><br><span class="line">使用Jetty作为嵌入式servlet容器的。 spring-boot-starter-tomcat的替代方法</span><br><span class="line"></span><br><span class="line">spring-boot-starter-logging</span><br><span class="line">使用Logback进行日志记录。 默认日志启动器</span><br><span class="line"></span><br><span class="line">spring-boot-starter-tomcat</span><br><span class="line">使用Tomcat作为嵌入式servlet容器。 spring-boot-starter-web使用的默认servlet容器</span><br><span class="line"></span><br><span class="line">spring-boot-starter-log4j2</span><br><span class="line">使用Log4j2进行日志记录。 spring-boot-starter-logging的替代方法</span><br></pre></td></tr></table></figure>
+<h3 id="3-2全局配置文件"><a href="#3-2全局配置文件" class="headerlink" title="3.2全局配置文件"></a>3.2全局配置文件</h3><blockquote>
+<p>Spring Boot项目使用一个全局的配置文件application.properties或者是application.yml，在resources目录下或者类路径下的/config下，一般我们放到resources下对默认配置信息进行修改</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/ka3B6Fedjf.bmp" alt="mark"></p>
+<h3 id="3-2-1读取配置文件"><a href="#3-2-1读取配置文件" class="headerlink" title="3.2.1读取配置文件"></a>3.2.1读取配置文件</h3><ul>
+<li>通过@Value注解</li>
+<li>通过SpringBoot提供的属性注入方式@ConfigurationProperties</li>
+</ul>
+<blockquote>
+<p>1） 定义一个配置类，添加@SpringBootConfiguration注解，声明这是一个配置类</p>
+<p>2） 在添加@ConfigurationProperties注解，指定配置文件中属性前缀</p>
+<p>3） 在类中添加 属性名一致的成员变量</p>
+<p>4） 提供getter和setter方法</p>
+</blockquote>
+<p>如：读取server.port=80和server.servlet-path=/的属性值</p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/D3caLlflaF.png?imageslim" alt="mark"></p>
+<p>注意：当读取spring.mvc.view.prefix的属性值的时候需要采用对象导航的方式读取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> springboot.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.charset.Charset;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.converter.HttpMessageConverter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.converter.StringHttpMessageConverter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.ModelAndView;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.mvc"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MvcConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 采用对象导航的方式读取配置文件中spring.mvc.view.prefix的属性值</span></span><br><span class="line">	<span class="keyword">private</span> View view = <span class="keyword">new</span> View();</span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">View</span> </span>&#123;</span><br><span class="line">		<span class="keyword">private</span> String prefix;</span><br><span class="line">		<span class="keyword">private</span> String suffix;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> String <span class="title">getPrefix</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> prefix;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrefix</span><span class="params">(String prefix)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.prefix = prefix;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> String <span class="title">getSuffix</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> suffix;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSuffix</span><span class="params">(String suffix)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.suffix = suffix;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3访问静态资源"><a href="#3-3访问静态资源" class="headerlink" title="3.3访问静态资源"></a>3.3访问静态资源</h3><blockquote>
+<p>SpringBoot中对静态资源进行了处理，如果访问的是静态资源，会去以下目录中寻找</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">classpath:/META-INF/resources/,</span><br><span class="line">classpath:/resources/,</span><br><span class="line">classpath:/static/,</span><br><span class="line">classpath:/public/</span><br></pre></td></tr></table></figure>
+<p>注意：当同server.servlet-path=*.html以 xxx结尾的映射时，静态资源只有放到<code>webapp</code>目录下才会被访问到。</p>
+<h3 id="4-通过启动类启动项目"><a href="#4-通过启动类启动项目" class="headerlink" title="4.通过启动类启动项目"></a>4.通过启动类启动项目</h3><blockquote>
+<p>SpringBoot内嵌了Tomcat容器，只需要编写main函数，调用指定的run方法就可以作为一个web项目启动</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/eLL088F1Kj.png?imageslim" alt="mark"></p>
+<p>分析：</p>
+<blockquote>
+<p>查看@SpringBootApplication注解：</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/842ieijBbC.bmp" alt="mark"></p>
+<p>指定扫描的包：</p>
+<blockquote>
+<p>在启动类上添加注解@ComponentScan(basePackages = {“com.example.controller”})</p>
+<p>注意：当前包及其子包都会被扫描包</p>
+</blockquote>
+<p>指定扫描的类：</p>
+<blockquote>
+<p>在启动类上添加注解@ComponentScan(basePackageClasses = TestController.class)</p>
+<p>与前者不同的是只扫描当前类</p>
+</blockquote>
+<h3 id="5-其他配置"><a href="#5-其他配置" class="headerlink" title="5.其他配置"></a>5.其他配置</h3><blockquote>
+<p>在使用SpringMVC的时候，我们经常需要配置例如：消息转换器、拦截器、等内容。官方给出了一种方案：通过定义一个类，继承WebMVCConfigureAdapter，然后添加@Configuration注解，再进行自定义配置即可</p>
+</blockquote>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/m3dhmeKjh0.png?imageslim" alt="mark"></p>
+<p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180314/LLHcBd56mi.png?imageslim" alt="mark"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置内容协调区，解决406问题</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureContentNegotiation</span><span class="params">(ContentNegotiationConfigurer configurer)</span> </span>&#123;</span><br><span class="line">	configurer.favorPathExtension(<span class="keyword">false</span>);</span><br></pre></td></tr></table></figure>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2017/08/18/单点登录/" title= 单点登录 >
+                    <div class="nextTitle">单点登录</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2017/02/01/Rest/" title= Rest >
+                    <div class="prevTitle">Rest</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:774769024@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/cbmanong" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/cbmanong" target="_blank">_initial</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Spring的Java配置方式"><span class="toc-number">1.</span> <span class="toc-text">1.Spring的Java配置方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-常用注解"><span class="toc-number">2.</span> <span class="toc-text">1.1.常用注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2加载配置类"><span class="toc-number">3.</span> <span class="toc-text">1.2加载配置类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码实现"><span class="toc-number">3.1.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-SpringBoot"><span class="toc-number">4.</span> <span class="toc-text">2.SpringBoot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1SpringBoot的好处"><span class="toc-number">5.</span> <span class="toc-text">2.1SpringBoot的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-注意"><span class="toc-number">6.</span> <span class="toc-text">2.2 注意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-关于启动器"><span class="toc-number">7.</span> <span class="toc-text">3.关于启动器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1启动器"><span class="toc-number">8.</span> <span class="toc-text">3.1启动器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2全局配置文件"><span class="toc-number">9.</span> <span class="toc-text">3.2全局配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1读取配置文件"><span class="toc-number">10.</span> <span class="toc-text">3.2.1读取配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3访问静态资源"><span class="toc-number">11.</span> <span class="toc-text">3.3访问静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-通过启动类启动项目"><span class="toc-number">12.</span> <span class="toc-text">4.通过启动类启动项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-其他配置"><span class="toc-number">13.</span> <span class="toc-text">5.其他配置</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 11 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/02</span><a class="archive-post-title" href= "/2018/03/02/关于MQ及Solr/" >关于MQ及Solr</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2017/12/05/对Redis的深入了解/" >对Redis的深入了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/03</span><a class="archive-post-title" href= "/2017/12/03/对Redis的初了解/" >对Redis的初了解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对于跨域问题的理解/" >对于跨域问题的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/dubbo/" >dubbo</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/对分布式事务的理解/" >对分布式事务的理解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/14</span><a class="archive-post-title" href= "/2017/03/14/SpringBoot/" >SpringBoot</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/01</span><a class="archive-post-title" href= "/2017/02/01/Rest/" >Rest</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: '_initial'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+

@@ -380,8 +380,10 @@
 <p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/J137DC4h1I.png?imageslim" alt="mark"></p>
 <p>在RabbitMQ中，消息确认有两种模式：</p>
 <p>1)自动模式，无需任何操作，在消息被消费者领取后，就会自动确认，消息也会从队列中删除；</p>
-<p>2)手动模式，消息被消费后，需要调用RabbitMQ提供的API来实现消息确认。</p>
-<p>具体通过调用指定channel.basicConsumer()方法中的第二个参数来设置。</p>
+<p>2)手动模式，消息被消费后，需要调用RabbitMQ提供的API来实现消息确认</p>
+<blockquote>
+<p>如果消息必须被成功消费，建议采用手动模式，具体通过调用指定channel.basicConsumer()方法中的第二个参数来设置。</p>
+</blockquote>
 <p><img src="http://orulqrhz4.bkt.clouddn.com/blog/180302/32jmJ0ILjC.png?imageslim" alt="mark"></p>
 <p>问题2：如果消息队列中的消息未被消费造成消息堆积如何解决？</p>
 <p>1)接收到信息后，而是通过线程池，异步消费</p>
@@ -700,7 +702,28 @@
     
     
     
-    <div class="total-archive"> Total : 10 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 11 </div>
     
     <div class="post-archive">
     
@@ -762,6 +785,11 @@
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/18</span><a class="archive-post-title" href= "/2017/08/18/单点登录/" >单点登录</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/14</span><a class="archive-post-title" href= "/2017/03/14/SpringBoot/" >SpringBoot</a>
         </li>
     
     

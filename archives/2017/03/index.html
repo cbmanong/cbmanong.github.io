@@ -290,36 +290,53 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2017/02/01/Rest/" >
+            <a class="abstract-title" href = "/2017/03/14/SpringBoot/" >
                 
-                    <span>Rest</span>
+                    <span>SpringBoot</span>
             </a>
             <div class="abstract-content">
-                1.关于REST
+                1.Spring的Java配置方式
+通过配置类完全替代XML配置
 
-什么叫状态转移？
-
-即具体含义的状态转移(从服务端到客户端)，通过状态码表示操作结果，如404表示资源找不到，200操作成功，303重定向等。
-2.什么是REST？
-全称Resource Representational State Transfer,简单说就是资源在网络上以某种表现形式进行状态转移，描叙的是在网络中client和server的一种交互形式，REST本身不实用，实用的是如何设计RESTful API(REST风格的网络接口)
+1.1.常用注解
+@Configuration
 
 
-Resource
+作用于类上，相当于一个xml配置文件
 
 
-资源,即数据
+@Bean
 
 
-Representational
+作用于方法上(一个生产指定对象的方法)上，相当于xml配置文件的&lt; bean&gt;,方法的返回值即创建的对象
 
 
-某种表现形式，如json、xml、jpeg等
-...
+@PropertySource
+
+
+指定属性文件所在的路径，格式：classpath：路径地址
+
+
+@Value
+
+
+读取配置文件中的值，格式：”${}”
+
+1.2加载配置类
+通过AnnotationConfigApplicationContext对象加载配置类
+
+
+
+代码实现
+配置类
+
+
+通...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/02/01</span>
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/03/14</span>
                 </div>
                 <!-- tags  -->
                 

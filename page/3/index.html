@@ -327,6 +327,33 @@ HttpClient用来调用服务，它是模拟一个浏览器(通过java代码)，�
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2017/08/20/关于Nginx/" >
+                
+                    <span>关于Nginx</span>
+            </a>
+            <div class="abstract-content">
+                1.什么是Nginx明确Nginx是一个高性能的web和反向代理服务器，好处体现有：
+1)作为web服务器，与Apache相比，更具轻量级，占用更少的内存和资源，而且支持更多的并发连接，因为nginx处理请求是异步非阻塞的，而apache是阻塞型的；
+2)作为负载均衡服务器，nginx既可以在内部支持Rails和PHP，也可以支持作为http代理服务器对外进行服务;
+3)作为邮件代理服务器，一个非常优秀的邮件代理服务器；
+4)安装简单，配置文件简洁，bug少
+
+2.什么是反向代理服务器
+反向代理方式是指以代理服务器来接受网络上的用户请求，然后将用户请求转发给原始服务器，从原始服务器上获取...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/08/20</span>
+                </div>
+                <!-- tags  -->
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2017/08/20/对分布式事务的理解/" >
                 
                     <span>对分布式事务的理解</span>
@@ -344,32 +371,6 @@ HttpClient用来调用服务，它是模拟一个浏览器(通过java代码)，�
                 <!-- date  -->
                 <div class="abstract-date">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/08/20</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2017/08/18/单点登录/" >
-                
-                    <span>单点登录</span>
-            </a>
-            <div class="abstract-content">
-                1.传统的登录流程
-
-存在的问题：
-
-
-1)登录和注册等只能运行在单个tomcat中，因为session无法在多个tomcat中进行共享，但是在我们的项目中所搭建的系统架构中每一个系统是由一个团队进行维护，每个系统都是单独部署运行一个tomcat，所以不能将用户的登录信息保存到session中，因为多个tomcat的session是不能共享的(注意：不是一定的，可以通过session拷贝实现session共享，即将多个tomcat的session进行同步拷贝，但这种方式效率很低 ，而且会导致数据的冗余且存在延迟，所以没人去用！)
-2)有多个用户注册登录就会有多个session，如何判断s...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/08/18</span>
                 </div>
                 <!-- tags  -->
                 
@@ -682,12 +683,7 @@ HttpClient用来调用服务，它是模拟一个浏览器(通过java代码)，�
     
     
     
-    
-    
-    
-    
-    
-    <div class="total-archive"> Total : 11 </div>
+    <div class="total-archive"> Total : 12 </div>
     
     <div class="post-archive">
     
@@ -696,6 +692,11 @@ HttpClient用来调用服务，它是模拟一个浏览器(通过java代码)，�
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/19</span><a class="archive-post-title" href= "/2018/03/19/SpringCloud/" >SpringCloud</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -738,12 +739,12 @@ HttpClient用来调用服务，它是模拟一个浏览器(通过java代码)，�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/关于Nginx/" >关于Nginx</a>
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2017/08/20/HttpClient和WebService/" >HttpClient和WebService</a>
         </li>
     
     
